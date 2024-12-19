@@ -1,0 +1,682 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Add Item{% endblock %}
+{% block content %}  
+<div class="container-fluid">
+   {% load static %}
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div
+                style="display: flex;
+                    flex-direction: column;
+                    background: #fff;
+                    margin-top: 0;
+                    margin-bottom: 30px;
+                    padding: 25px 0px 0px 38px;
+                    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
+                    margin-left: -40px;
+                    margin-right: -40px;
+                    /* position: relative; */
+                "
+            > 
+                <div  
+                    style="display: flex;
+                        flex-direction: column; 
+                        margin-bottom: 1rem;
+                        
+                    "
+                    
+                >
+                    <div 
+                        style="align-self: flex-start;
+                            margin-bottom: 0.5rem;
+                    
+                        
+                        "
+                    
+                    >
+                        <h2 
+                            style="
+                                font-size: 20px;
+                                font-weight: 500;
+                                color: #15283c; 
+                            "
+                        >
+                            Add Item
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp;  
+                        </h2>  
+                    </div> 
+                    <div style="display: flex;flex-direction: row;justify-content: space-between;margin-top: 1rem;">
+                        <div style="display: flex;flex-direction: row;margin-top: 8px;">
+                            <div class="bread_crumb_hovering">  
+                                <u style="border-bottom: 1px solid #15283c;"> <a href="{% url 'index' %}"> <span>Dashboard</span></a> </u>
+                            </div> 
+                            
+                            
+
+                            <div>
+                                &nbsp; / &nbsp;  
+                            </div>
+                            <div class="bread_crumb_hovering">  
+                                <u style="border-bottom: 1px solid #15283c;"><a href="{% url 'item_list' %}"> <span>Items List</span></a> </u>
+                            </div>
+                            
+
+                            {% comment %} <div>
+                                &nbsp; / &nbsp;  
+                            </div>
+                            <div class="bread_crumb_hovering">  
+                                <u style="border-bottom: 1px solid #15283c;"> <a href="{% url 'menu_list' %}"> <span>Menu List</span></a> </u>
+                            </div> {% endcomment %}
+
+                            <div>
+                                &nbsp; / &nbsp; <span style="font-size: 11px;">Add item</span> 
+                            </div>
+
+                        </div>
+                        <div class="bread_crumb_hovering" style="margin-right: 40px;">  
+                            <button style="background: #0971b8;" class="btn"><a style="color: white;"  href="{% url 'add_item_form' add_button_clicked=1 %}">Add Item</a></button> 
+                        </div>
+                         
+                    </div>
+                    
+                </div>  
+                
+            </div>  
+        </div>
+    </div>
+    <form action="/add_item" enctype="multipart/form-data" method="POST">
+        {% csrf_token %} 
+        <!-- row -->
+        <div class="row column4 graph"> 
+
+            <div class="col-md-12"> 
+                
+                <div class="white_shd full margin_bottom_30" style="background: #fff;" >  
+                    <div style = "margin-top: 20px">
+                        {% csrf_token %} 
+                        {% if messages %} 
+                            {% for message in messages %} 
+                                <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible" {% endif %} style="text-align: center;width: 380px;margin-top: 10px;margin: auto;">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    {{ message }}
+                                </div> 
+                            {% endfor %} 
+                        {% endif %}
+                    
+                    </div> 
+                    <div   style="display: flex;flex-direction: column;max-width: 640px;min-height: 270px;background: #fff;margin: auto;margin-top: 20px;padding-top: 35px;">
+                        
+
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 6px;">Item Name</span> 
+                            </div> 
+                            <div style="width: 350px;">
+                                {% if  re_render %}
+                                    <input type="text" name="item_name" id = "kt_docs_maxlength_custom_text" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" value="{{item_name}}" placeholder="Enter Name" maxlength="50" />  
+                                {% else %}
+                                    <input type="text" name="item_name"  id = "kt_docs_maxlength_custom_text" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" placeholder="Enter Name" maxlength="50"/>  
+                                {% endif %} 
+                            </div> 
+                        </div>  
+
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px;padding-top: 40px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 6px;">Item Price</span> 
+                            </div> 
+                            <div  style="width: 350px;">
+
+                                {% if re_render %}
+                                    <input type="text" name="item_price" id = "kt_docs_maxlength_custom_text6" class="styled_input_box_edit_username"  style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" value="{{item_price}}" placeholder="Enter price" maxlength="50" oninput="validate(this)" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57 || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 110 || event.keyCode == 190 || event.keyCode == 8 || event.keyCode == 9;"/>
+                                {% else %}
+                                    <input type="text" name="item_price" id = "kt_docs_maxlength_custom_text6" class="styled_input_box_edit_username"  style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" placeholder="Enter price" maxlength="50" oninput="validate(this)" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57 || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 110 || event.keyCode == 190 || event.keyCode == 8 || event.keyCode == 9;"/>
+
+                                {% endif %}
+                            
+                            </div> 
+                        </div>
+
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px;padding-top: 40px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 6px;">Discounted Price</span> 
+                            </div> 
+                            <div  style="width: 350px;">
+
+                                {% if re_render %}
+                                    <input type="text" name="discounted_price" id = "kt_docs_maxlength_custom_text6" class="styled_input_box_edit_username"  style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" value="{{discounted_price}}" placeholder="Enter price" maxlength="50" oninput="validate(this)" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57 || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 110 || event.keyCode == 190 || event.keyCode == 8 || event.keyCode == 9;"/>
+                                {% else %}
+                                    <input type="text" name="discounted_price" id = "kt_docs_maxlength_custom_text6" class="styled_input_box_edit_username"  style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" placeholder="Enter discounted price" maxlength="50" oninput="validate(this)" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57 || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 110 || event.keyCode == 190 || event.keyCode == 8 || event.keyCode == 9;"/>
+
+                                {% endif %}
+                            
+                            </div> 
+                        </div>
+
+
+                        <div style="display: flex; flex-direction: row; align-items: center; width: 500px; padding-top: 10px;">
+                            <div style="width: 190px;">
+                                <label for="selectTopic" style="margin-top: 6px;">Select AddOns</label>
+                            </div>
+
+
+                            {% if  re_render %}
+                                {% if  selcted_item_flag %}
+                                    <div style="width: 120px; margin-left: 10px;">
+                                        <select id="selected_item_cat_dropdown_addons" name="selected_item_cat_dropdown_addons" >
+                                            {% for item in all_addons %}
+                                                {% if item.title in selected_item %}
+                                                    <option value="{{ item.id }}" selected>{{ item.title }}</option>
+                                                {% else %}
+                                                    <option value="{{ item.id }}">{{ item.title }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                        
+                                    </div>
+                                
+
+                                {%else%}
+
+                                    <div style="width: 120px; margin-left: 10px;">
+                                        <select id="selected_item_cat_dropdown_addons" name="selected_item_cat_dropdown_addons" >
+                                            {% for item in all_addons %}
+                                                <option value="{{ item.id }}">{{ item.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        
+                                    </div>
+
+                                {%endif%}
+
+                                
+
+                            {%else%}
+
+                                <div style="width: 120px; margin-left: 10px;">
+                                    <select id="selected_item_cat_dropdown_addons" name="selected_item_cat_dropdown_addons"  class="custom-dropdown" multiple="multiple">
+                                        
+
+                                        {% for item in all_addons %}
+                                            {% if item.title in selected_addons %}
+                                                <option value="{{ item.id }}" selected>{{ item.title }}</option>
+                                            {% else %}
+                                                <option value="{{ item.id }}">{{ item.title }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                            {%endif%}
+
+
+                            
+
+                        </div>
+
+
+
+                        {% comment %} <div style="display: flex;flex-direction: row;justify-content: space-between;width: 500px;padding-top: 10px;">
+
+                            <div style="width: 200px;">
+                                <span style="margin-top: 16px;">Select Category </span> 
+                            </div> 
+                            <div  style="width: 350px;display: flex;flex-flow: row wrap;">
+
+                                <div style="width: fit-content;display: flex;flex-direction: row;margin-right: 18px; margin-left:19px;">
+                                    {% if re_render%}
+
+                                        {% if checkboxstatus == 'active' %} 
+                                            <div style="width: fit-content;display: flex;flex-direction: row;margin-right: 18px;">
+                                                <span    id="active" style="margin-top: 16px;"  class="checkboxqes  checked">
+                                                    <i class="fa fa-check"  id="tickmarkqes_active"></i>
+                                                </span> 
+
+                                                <span style="margin-left: 4px;margin-top: 14px;" class="item-text">Daily Deals</span>
+                                            </div> 
+                                        {%else%}
+                                            <div style="width: fit-content;display: flex;flex-direction: row;margin-right: 18px;">
+                                                <span    id="active" style="margin-top: 16px;"  class="checkboxqes">
+                                                    <i class="fa fa-check"  id="tickmarkqes_active" style="display: none;"></i>
+                                                </span> 
+
+                                                <span style="margin-left: 4px;margin-top: 14px;" class="item-text">Daily Deals</span>
+                                            </div>
+                                        {%endif%}
+
+                                        {% if checkboxstatus == 'inactive' %} 
+                                            <div style="width: fit-content;display: flex;flex-direction: row;margin-right: 18px;">
+                                                <span    id="inactive" style="margin-top: 16px;"  class="checkboxqes  checked">
+                                                    <i class="fa fa-check"  id="tickmarkqes_inactive"></i>
+                                                </span> 
+
+                                                <span style="margin-left: 4px;margin-top: 14px;" class="item-text">Add Ons</span>
+                                            </div> 
+                                        {%else%}
+                                            <div style="width: fit-content;display: flex;flex-direction: row;margin-right: 18px;">
+                                                <span    id="inactive" style="margin-top: 16px;"  class="checkboxqes">
+                                                    <i class="fa fa-check"  id="tickmarkqes_inactive" style="display: none;"></i>
+                                                </span> 
+
+                                                <span style="margin-left: 4px;margin-top: 14px;" class="item-text">Add Ons</span>
+                                            </div>
+                                        {%endif%}
+
+
+
+
+                                       
+
+                                    {% else %}
+
+                                        <div style="width: fit-content;display: flex;flex-direction: row;margin-right: 18px;">
+                                            <span    id="active" style="margin-top: 16px;"  class="checkboxqes">
+                                                <i class="fa fa-check"  id="tickmarkqes_active" style="display: none;"></i>
+                                            </span> 
+
+                                            <span style="margin-left: 4px;margin-top: 14px;" class="item-text">Daily Deals</span>
+                                        </div>
+
+                                        <div style="width: fit-content;display: flex;flex-direction: row;margin-right: 18px;">
+                                            <span    id="inactive" style="margin-top: 16px;"  class="checkboxqes">
+                                                <i class="fa fa-check"  id="tickmarkqes_inactive" style="display: none;"></i>
+                                            </span> 
+
+                                            <span style="margin-left: 4px;margin-top: 14px;" class="item-text">Add Ons</span>
+                                        </div> 
+
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                        </div>  {% endcomment %}
+
+                        <div style="display: flex;flex-direction: row;width: 550px;padding-top: 40px;">
+
+                            
+                            <div style="width: 200px;">
+                                <span  id="the_basics_tag_id"  style="margin-top: 16px;">The Exclusive</span> 
+                            </div> 
+                            <div  style="width: 350px;display: flex;flex-direction: row;"> 
+
+
+                                {% if re_render %}
+
+                                    {% if teckmarkinputbasicinput is not None %}
+
+                                        <div style="width: 40px;">
+                                            <span  id="the_basics_checkbox_id"    style="margin-top: 16px;"  class="checkobox_the_basics">
+                                                <i class="fa fa-check"  id="tickmark_the_basics" ></i>
+                                            </span> 
+                                        </div> 
+
+                                        <div style="width: 200px;margin-left: 6px;">
+                                            <span style="margin-top: 12px;"></span> 
+                                        </div>
+
+                                    {% else %}
+
+                                    <div style="width: 40px;">
+                                        <span  id="the_basics_checkbox_id"    style="margin-top: 16px;"  class="checkobox_the_basics">
+                                            <i class="fa fa-check"  id="tickmark_the_basics" style="display: none;"></i>
+                                        </span> 
+                                    </div> 
+
+                                    <div style="width: 200px;margin-left: 6px;">
+                                        <span style="margin-top: 12px;"></span> 
+                                    </div>
+
+                                    {% endif %}
+
+                                {% else %}
+
+                                    <div style="width: 40px;">
+                                        <span  id="the_basics_checkbox_id"  style="margin-top: 16px;"  class="checkobox_the_basics">
+                                            <i class="fa fa-check"  id="tickmark_the_basics" style="display: none;"></i>
+                                        </span> 
+                                    </div> 
+
+                                    <div style="width: 200px;margin-left: 6px;">
+                                        <span style="margin-top: 12px;"></span> 
+                                    </div>
+
+                                {% endif %}
+                                
+
+                            </div> 
+
+
+                        </div>
+
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px;padding-top: 40px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 20px;">Upload Image</span> 
+                            </div> 
+                            <div  style="width: 350px;">
+                                {% load static %}  
+
+                                <div class="avatar-upload"  style="margin: 0px;">
+                                    <div class="avatar-edit">
+                                        <input type="file" id="imageUpload" name="item_image" accept=".png, .jpg, .jpeg .webp" />
+                                        <label for="imageUpload"></label>
+                                    </div>
+                                    <div class="avatar-preview">
+                                        <div id="imagePreview" style="background-image: url('{{ STATIC_URL }}assets/src/images/layout_img/pattern_h.png');">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+
+
+
+
+                        
+
+                        
+                        <div style="display: flex;flex-direction: row;width: 750px;padding-top: 40px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 20px;">Description</span> 
+                            </div> 
+                            <div  style="width: 550px;">
+                                {% if  re_render %}
+                                    <textarea class="form-control" name="item_description" rows="5" id="comment">{{item_description}}</textarea> 
+                                {%else%}
+                                    <textarea class="form-control" name="item_description" rows="5" id="comment"></textarea>
+                                {%endif%}
+                            </div> 
+                        </div>
+
+
+                        <div   style="display: flex;flex-direction: column;max-width: 640px;background: #fff;margin: auto;margin-top: 20px;padding-top: 35px;">
+                            <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px;">
+                                <div style="width: 200px;">
+                                    <span style="margin-top: 16px;display: none;">Enter Question</span> 
+                                </div> 
+                                <div style="width: 350px;">
+                                    <button type="submit" style="background: #0971b8;padding-left: 16px;padding-right: 16px;color: white;" class="btn">Save</button>
+                                </div> 
+                            </div>   
+                        </div> 
+                        <div   style="max-width: 640px;background: #fff;margin: auto;margin-top: 60px;padding-bottom: 1rem;"> 
+                        </div> 
+                        
+
+                    </div> 
+
+                
+                    
+                </div>
+
+
+                
+            </div> 
+            
+        </div>   
+        <div id="newinputdiv" style="display: none;" > 
+                       
+
+            <input type="checkbox"  name="the_basics_checkbox" id="the_basics_checkbox_id"  /> 
+
+
+            {% if re_render %}
+
+                {%if teckmarkinputbasicinput is not None %}
+
+                    <input type="checkbox" checked name="teckmarkinputbasicinput" id="teckmarkinputbasicqesid"  />
+
+
+                {% else %}
+
+                    <input type="checkbox"  name="teckmarkinputbasicinput" id="teckmarkinputbasicqesid"  />
+
+                {% endif %}
+
+
+            {% else %}
+
+                <input type="checkbox"  name="teckmarkinputbasicinput" id="teckmarkinputbasicqesid"  />
+
+            {% endif %}
+
+        </div> 
+        <div id="newinputdiv" style = "display: none;">
+            <input type="checkbox"   name="alertcontrol" id="alertcontrolid" value=""></input>  
+            {% if re_render %}
+                {% if checkboxstatus == 'active' %}
+                    <input type="checkbox" checked  name="membarh" value=""  class="totaled"  id="select_active"></input>
+                    <input type="checkbox" checked  name="teckmarkinput" id="teckmarkinputid_active" value=""></input>
+                {%else%}
+                    <input type="checkbox"   name="membarh" value=""  class="totaled"  id="select_active"></input> 
+                    <input type="checkbox"  name="teckmarkinput" id="teckmarkinputid_active" value=""></input>
+                {%endif%} 
+
+                {% if checkboxstatus == 'inactive' %}
+                    <input type="checkbox" checked name="membarh_ka" value=""   class="totaled"  id="select_inactive"></input>
+                    <input type="checkbox" checked  name="teckmarkinput" id="teckmarkinputid_inactive" value=""></input>
+                {%else%}
+                    <input type="checkbox" name="membarh_ka" value=""   class="totaled"  id="select_inactive"></input> 
+                    <input type="checkbox"  name="teckmarkinput" id="teckmarkinputid_inactive" value=""></input>
+                {%endif%} 
+
+            {% else %}
+                <input type="checkbox" name="membarh"   value=""  class="totaled"  id="select_active"></input>  
+                <input type="checkbox" name="membarh_ka" value=""   class="totaled"  id="select_inactive"></input>
+
+                <input type="checkbox"  name="teckmarkinput"  id="teckmarkinputid_active" value=""></input>
+                <input type="checkbox"  name="teckmarkinput" id="teckmarkinputid_inactive" value=""></input> 
+
+            {% endif %}
+
+        </div> 
+
+    </form>
+
+
+</div> 
+<script type="text/javascript">
+    $(function(){
+        $('#selected_item_cat_dropdown_addons').multiSelect();
+    });
+</script>
+
+{% comment %} JS for topics dropdown {% endcomment %}
+<script>
+    itemsqes = document.querySelectorAll(".checkboxqes");  
+    itemsqes.forEach(item => {
+        item.addEventListener("click", () => {
+            let selectefd = document.querySelector(".checkboxqes.checked");
+            if(selectefd){
+                selectefd.classList.toggle("checked"); 
+                console.log("yaraaa awaaaa",selectefd.id);
+                var this_topicbhh = document.getElementById("select_"+selectefd.id); 
+
+                var checkmarkvarprv = document.getElementById("tickmarkqes_"+selectefd.id); 
+                var tickmarkinputvarprv = document.getElementById("teckmarkinputid_"+selectefd.id);
+                if(tickmarkinputvarprv.checked == false) {
+                    tickmarkinputvarprv.checked = true; 
+                    checkmarkvarprv.style.display = "block";
+                }
+                else {
+                    if(tickmarkinputvarprv.checked == true) {
+                        tickmarkinputvarprv.checked = false; 
+                        checkmarkvarprv.style.display = "none";
+                    }   
+                }
+
+
+                if(this_topicbhh.checked == false) {
+                    this_topicbhh.checked = true; 
+                }
+                else {
+                    if(this_topicbhh.checked == true) {
+                        this_topicbhh.checked = false; 
+                    }   
+                }
+            }  
+            var this_qes = document.getElementById("select_"+item.id);
+            item.classList.toggle("checked"); 
+
+            var checkmarkvar = document.getElementById("tickmarkqes_"+item.id); 
+            var tickmarkinputvar = document.getElementById("teckmarkinputid_"+item.id);
+            if(tickmarkinputvar.checked == false) {
+                tickmarkinputvar.checked = true; 
+                checkmarkvar.style.display = "block";
+            }
+            else {
+                if(tickmarkinputvar.checked == true) {
+                    tickmarkinputvar.checked = false; 
+                    checkmarkvar.style.display = "none";
+                }   
+            }
+
+            if(this_qes.checked == false) {
+                this_qes.checked = true; 
+            }
+            else {
+                if(this_qes.checked == true) {
+                    this_qes.checked = false; 
+                }   
+            }  
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $("#the_basics_tag_id").tooltip({
+            placement: "top"
+        });
+
+        $("#the_basics_checkbox_id").tooltip({
+            placement: "top"
+        });
+    });
+</script>
+<script>   
+    const fileInput = document.getElementById('imageUpload'); 
+    fileInput.addEventListener('change', event => {  
+        console.log("boolyyyyy"); 
+        const files = event.target.files;
+        console.log("files",files); 
+
+        const file = files[0];
+        console.log("file",file); 
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.addEventListener("load", function (e) {
+            $('#imagePreview').css('background-image', 'url('+ this.result +')'); 
+            // fileInput.style.display = "block";
+        }); 
+    });    
+    
+    items = document.querySelectorAll(".sessions_checkboxes");
+
+       
+    items.forEach(item => {
+        item.addEventListener("click", () => { 
+            var this_topic = document.getElementById("ques_"+item.id); 
+
+            var checkmarkvar = document.getElementById("tickmark_"+item.id); 
+            var tickmarkinputvar = document.getElementById("teckmarksessioninputid_"+item.id);
+            if(tickmarkinputvar.checked == false) {
+                tickmarkinputvar.checked = true; 
+                checkmarkvar.style.display = "block";
+            }
+            else {
+                if(tickmarkinputvar.checked == true) {
+                    tickmarkinputvar.checked = false; 
+                    checkmarkvar.style.display = "none";
+                }   
+            }
+
+
+            if(this_topic.checked == false) {
+                this_topic.checked = true; 
+            }
+            else {
+                if(this_topic.checked == true) {
+                    this_topic.checked = false; 
+                }   
+            }    
+
+        });
+    });  
+
+    itemsqes = document.querySelectorAll(".checkboxqes"); 
+
+    itemsqes.forEach(item => {
+        item.addEventListener("click", () => {   
+            var this_qes = document.getElementById("select_"+item.id); 
+
+            var checkmarkvar = document.getElementById("tickmarkqes_"+item.id); 
+            var tickmarkinputvar = document.getElementById("teckmarkinputqesid_"+item.id);
+            if(tickmarkinputvar.checked == false) {
+                tickmarkinputvar.checked = true; 
+                checkmarkvar.style.display = "block";
+            }
+            else {
+                if(tickmarkinputvar.checked == true) {
+                    tickmarkinputvar.checked = false; 
+                    checkmarkvar.style.display = "none";
+                }   
+            }
+
+            if(this_qes.checked == false) {
+                this_qes.checked = true; 
+            }
+            else {
+                if(this_qes.checked == true) {
+                    this_qes.checked = false; 
+                }   
+            }  
+        });
+    });
+
+    basicsitem = document.querySelector(".checkobox_the_basics");
+
+    basicsitem.addEventListener("click", () => {   
+        var this_qesbasic = document.getElementById("the_basics_checkbox_id"); 
+
+        var checkmarkvarbasic = document.getElementById("tickmark_the_basics"); 
+        var tickmarkinputvarbasic = document.getElementById("teckmarkinputbasicqesid");
+        if(tickmarkinputvarbasic.checked == false) {
+            tickmarkinputvarbasic.checked = true; 
+            checkmarkvarbasic.style.display = "block";
+        }
+        else {
+            if(tickmarkinputvarbasic.checked == true) {
+                tickmarkinputvarbasic.checked = false; 
+                checkmarkvarbasic.style.display = "none";
+            }   
+        }
+
+        if(this_qesbasic.checked == false) {
+            this_qesbasic.checked = true; 
+        }
+        else {
+            if(this_qesbasic.checked == true) {
+                this_qesbasic.checked = false; 
+            }   
+        }  
+    });
+</script>
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+{% endblock %}

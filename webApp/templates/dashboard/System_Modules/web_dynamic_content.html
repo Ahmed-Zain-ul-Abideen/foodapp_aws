@@ -1,0 +1,375 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Web Dynamic Content{% endblock %}
+{% block content %}  
+<div class="container-fluid">
+   {% load static %}
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div
+                style="display: flex;
+                    flex-direction: column;
+                    background: #fff;
+                    margin-top: 0;
+                    margin-bottom: 30px;
+                    padding: 25px 0px 0px 38px;
+                    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
+                    margin-left: -40px;
+                    margin-right: -40px;
+                    /* position: relative; */
+                "
+            > 
+                <div  
+                    style="display: flex;
+                        flex-direction: column; 
+                        margin-bottom: 1rem;
+                        
+                    "
+                    
+                >
+                    <div 
+                        style="align-self: flex-start;
+                            margin-bottom: 0.5rem;
+                    
+                        
+                        "
+                    
+                    >
+                        <h2 
+                            style="
+                                font-size: 20px;
+                                font-weight: 500;
+                                color: #15283c; 
+                            "
+                        >
+                            Web Dynamic Content
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp;  
+                        </h2>  
+                    </div> 
+                    <div style="display: flex;flex-direction: row;justify-content: space-between;margin-top: 1rem;">
+                        <div style="display: flex;flex-direction: row;margin-top: 8px;">
+                            <div class="bread_crumb_hovering">  
+                                <u style="border-bottom: 1px solid #15283c;"> <a href="{% url 'index' %}"> <span>Dashboard</span></a> </u>
+                            </div> 
+                            
+                            
+
+                            <div>
+                                &nbsp; / &nbsp; <span style="font-size: 11px;">Web Dynamic Content</span> 
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                    
+                </div>  
+                
+            </div>  
+        </div>
+    </div>
+    <form action="/edit_web_dynamic_content" enctype="multipart/form-data" method="POST">
+        {% csrf_token %} 
+        <!-- row -->
+        <div class="row column4 graph"> 
+
+            <div class="col-md-12"> 
+                
+                <div class="white_shd full margin_bottom_30" style="background: #fff;" >  
+                    <div style = "margin-top: 20px">
+                        {% csrf_token %} 
+                        {% if messages %} 
+                            {% for message in messages %} 
+                                <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible" {% endif %} style="text-align: center;width: 380px;margin-top: 10px;margin: auto;">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    {{ message }}
+                                </div> 
+                            {% endfor %} 
+                        {% endif %}
+                    
+                    </div> 
+                    <div   style="display: flex;flex-direction: column;max-width: 640px;min-height: 270px;background: #fff;margin: auto;margin-top: 20px;padding-top: 35px;">
+                        
+
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px; padding-bottom:24px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 6px;">Hero Section Title</span> 
+                            </div> 
+                            <div style="width: 350px;">
+                                {% if  re_render %}
+                                    <input type="text" name="hero_section_title" id = "kt_docs_maxlength_custom_text" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" value="{{hero_section_title}}" maxlength="100" />  
+                                {% elif new_record %}
+                                    <input type="text" name="hero_section_title" id = "kt_docs_maxlength_custom_text" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" placeholder="Enter Hero Section Title" maxlength="100" />  
+
+
+                                {% else %}
+                                    <input type="text" value= "{{web_dynamic_instance.Hero_section_title}}" name="hero_section_title"  id = "kt_docs_maxlength_custom_text" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" maxlength="100"/>  
+                                {% endif %} 
+
+                            </div> 
+                        </div>
+
+                    
+                        <div style="display: flex;flex-direction: row;width: 750px;padding-top: 40px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 20px;">Hero Sections Description</span> 
+                            </div> 
+                            <div  style="width: 550px;">
+                                {% if  re_render %}
+                                    <textarea class="form-control" name="hero_section_description" rows="5" id="comment">{{hero_section_description}}</textarea> 
+                                {% elif new_record %}
+                                    <textarea class="form-control" name="hero_section_description" rows="5" id="comment">{{hero_section_description}}</textarea>
+                                {%else%}
+                                    <textarea class="form-control" name="hero_section_description" rows="5" id="comment">{{web_dynamic_instance.Hero_section_description}}</textarea>
+                                {%endif%}
+                            </div> 
+                        </div>
+
+                        
+
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px;padding-top: 40px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 20px;">Hero Section Image</span> 
+                            </div> 
+                            <div  style="width: 350px;">
+                                {% load static %}  
+
+                                <div class="avatar-upload"  style="margin: 0px;">
+                                    <div  class="avatar-edit" >
+
+                                        <input type="file" id="imageUpload" name="hero_section_image" accept=".png, .jpg, .jpeg .webp" />
+                                        <label for="imageUpload"></label>
+                                    </div>
+                                    <div class="avatar-preview">
+                                        {% if web_dynamic_instance.Hero_section_image %} 
+                                            <div id="imagePreview" style="background-image: url('{{ web_dynamic_instance.Hero_section_image.url }}');">
+                                            </div>
+                                        {% else %}
+                                            <div id="imagePreview" style="background-image: url('{{ STATIC_URL }}assets/src/images/layout_img/pattern_h.png');">
+                                            </div>
+                                        {% endif %} 
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+
+                        {% comment %} About Section  {% endcomment %}
+
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px; padding-bottom:24px; margin-top:50px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 6px;">About Section Title</span> 
+                            </div> 
+                            <div style="width: 350px;">
+                                {% if  re_render %}
+                                    <input type="text" name="about_section_title" id = "kt_docs_maxlength_custom_text_about" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" value="{{about_section_title}}" maxlength="100" />  
+                                {% elif new_record %}
+                                    <input type="text" name="about_section_title" id = "kt_docs_maxlength_custom_text_about" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" placeholder="Enter About Section Title" maxlength="100" />  
+
+
+                                {% else %}
+                                    <input type="text" value= "{{web_dynamic_instance.about_section_title}}" name="about_section_title"  id = "kt_docs_maxlength_custom_text" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" maxlength="100"/>  
+                                {% endif %} 
+
+                            </div> 
+                        </div>
+
+                    
+                        <div style="display: flex;flex-direction: row;width: 750px;padding-top: 40px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 20px;">About Sections Description</span> 
+                            </div> 
+                            <div  style="width: 550px;">
+                                {% if  re_render %}
+                                    <textarea class="form-control" name="about_section_description" rows="5" id="comment">{{about_section_description}}</textarea> 
+                                {% elif new_record %}
+                                    <textarea class="form-control" name="about_section_description" rows="5" id="comment">{{about_section_description}}</textarea>
+                                {%else%}
+                                    <textarea class="form-control" name="about_section_description" rows="5" id="comment">{{web_dynamic_instance.about_section_description}}</textarea>
+                                {%endif%}
+                            </div> 
+                        </div>
+
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px;padding-top: 40px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 20px;">About Section Image</span> 
+                            </div> 
+                            <div  style="width: 350px;">
+                                {% load static %}  
+
+                                <div class="avatar-upload"  style="margin: 0px;">
+                                    <div class="avatar-edit">
+                                        <input type="file" id="imageUploadAbout" name="about_section_image" accept=".png, .jpg, .jpeg .webp" />
+                                        <label for="imageUploadAbout"></label>
+                                    </div>
+                                    <div class="avatar-preview">
+                                        {% if web_dynamic_instance.about_section_image %} 
+                                            <div id="imagePreviewabout" style="background-image: url('{{ web_dynamic_instance.about_section_image.url }}');">
+                                            </div>
+                                        {% else %}
+                                            <div id="imagePreviewabout" style="background-image: url('{{ STATIC_URL }}assets/src/images/layout_img/pattern_h.png');">
+                                            </div>
+                                        {% endif %} 
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+
+
+                        {% comment %} Daily Section {% endcomment %}
+
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px; padding-bottom:24px; margin-top:50px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 6px;">Daily Section Title</span> 
+                            </div> 
+                            <div style="width: 350px;">
+                                {% if  re_render %}
+                                    <input type="text" name="daily_section_title" id = "kt_docs_maxlength_custom_text_daily" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" value="{{daily_section_title}}" maxlength="100" />  
+                                {% elif new_record %}
+                                    <input type="text" name="daily_section_title" id = "kt_docs_maxlength_custom_text_daily" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" placeholder="Enter Daily Section Title" maxlength="100" />  
+
+
+                                {% else %}
+                                    <input type="text" value= "{{web_dynamic_instance.daily_section_title}}" name="daily_section_title"  id = "kt_docs_maxlength_custom_texr_daily" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" maxlength="100"/>  
+                                {% endif %} 
+
+                            </div> 
+                        </div>
+
+                    
+                        <div style="display: flex;flex-direction: row;width: 750px;padding-top: 40px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 20px;">Daily Sections Description</span> 
+                            </div> 
+                            <div  style="width: 550px;">
+                                {% if  re_render %}
+                                    <textarea class="form-control" name="daily_section_description" rows="5" id="comment">{{daily_section_description}}</textarea> 
+                                {% elif new_record %}
+                                    <textarea class="form-control" name="daily_section_description" rows="5" id="comment">{{daily_section_description}}</textarea>
+                                {%else%}
+                                    <textarea class="form-control" name="daily_section_description" rows="5" id="comment">{{web_dynamic_instance.daily_section_description}}</textarea>
+                                {%endif%}
+                            </div> 
+                        </div>
+
+                        {% comment %} Menu Section {% endcomment %}
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px; padding-bottom:24px; margin-top:50px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 6px;">Menu Section Title</span> 
+                            </div> 
+                            <div style="width: 350px;">
+                                {% if  re_render %}
+                                    <input type="text" name="menu_section_title" id = "kt_docs_maxlength_custom_text_menu" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" value="{{menu_section_title}}" maxlength="100" />  
+                                {% elif new_record %}
+                                    <input type="text" name="menu_section_title" id = "kt_docs_maxlength_custom_text_menu" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" placeholder="Enter Menu Section Title" maxlength="100" />  
+
+
+                                {% else %}
+                                    <input type="text" value= "{{web_dynamic_instance.menus_section_title}}" name="menu_section_title"  id = "kt_docs_maxlength_custom_texr_menu" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" maxlength="100"/>  
+                                {% endif %} 
+
+                            </div> 
+                        </div>
+
+                    
+                        <div style="display: flex;flex-direction: row;width: 750px;padding-top: 40px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 20px;">Menu Sections Description</span> 
+                            </div> 
+                            <div  style="width: 550px;">
+                                {% if  re_render %}
+                                    <textarea class="form-control" name="menu_section_description" rows="5" id="comment">{{menu_section_description}}</textarea> 
+                                {% elif new_record %}
+                                    <textarea class="form-control" name="menu_section_description" rows="5" id="comment">{{menu_section_description}}</textarea>
+                                {%else%}
+                                    <textarea class="form-control" name="menu_section_description" rows="5" id="comment">{{web_dynamic_instance.menus_section_description}}</textarea>
+                                {%endif%}
+                            </div> 
+                        </div>
+
+
+
+                        
+                        
+                        
+
+                        <div   style="display: flex;flex-direction: column;max-width: 640px;background: #fff;margin: auto;margin-top: 20px;padding-top: 35px;">
+                            <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px;">
+                                <div style="width: 200px;">
+                                    <span style="margin-top: 16px;display: none;">Enter Question</span> 
+                                </div> 
+                                <div style="width: 350px;">
+                                    <button type="submit" style="background: #0971b8;padding-left: 16px;padding-right: 16px;color: white;" class="btn">Save</button>
+                                </div> 
+                            </div>   
+                        </div>
+                        <!-- <div   style="max-width: 500px;background: #fff;margin: auto;padding-bottom: 1rem;">
+                            <button type="submit" class="add_theme_main_bt" style="float: right;margin-right: 60px;" >Save</button>  
+                        </div> -->
+                        <div   style="max-width: 640px;background: #fff;margin: auto;margin-top: 60px;padding-bottom: 1rem;"> 
+                        </div> 
+
+                        
+                        
+
+                    </div> 
+
+                    
+                </div>
+
+
+                
+            </div> 
+            
+        </div>   
+
+
+
+    </form>
+
+
+</div> 
+
+<script>   
+    const fileInput = document.getElementById('imageUpload'); 
+    fileInput.addEventListener('change', event => {  
+        console.log("boolyyyyy"); 
+        const files = event.target.files;
+        console.log("files",files); 
+
+        const file = files[0];
+        console.log("file",file); 
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.addEventListener("load", function (e) {
+            $('#imagePreview').css('background-image', 'url('+ this.result +')'); 
+            // fileInput.style.display = "block";
+        }); 
+    });    
+    
+    
+</script>
+<script>
+    const fileInputabout = document.getElementById('imageUploadAbout'); 
+    fileInputabout.addEventListener('change', event => {  
+        console.log("boolyyyyy"); 
+        const files = event.target.files;
+        console.log("files",files); 
+
+        const file = files[0];
+        console.log("file",file); 
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.addEventListener("load", function (e) {
+            $('#imagePreviewabout').css('background-image', 'url('+ this.result +')'); 
+            // fileInput.style.display = "block";
+        }); 
+    }); 
+</script>
+
+
+
+
+
+{% endblock %}

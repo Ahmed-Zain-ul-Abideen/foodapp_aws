@@ -1,0 +1,724 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Payment Account List{% endblock %}
+{% block content %}  
+<div class="container-fluid">
+   {% load static %}
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div
+                style="display: flex;
+                    flex-direction: column;
+                    background: #fff;
+                    margin-top: 0;
+                    margin-bottom: 30px;
+                    padding: 25px 0px 0px 38px;
+                    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
+                    margin-left: -40px;
+                    margin-right: -40px;
+                    /* position: relative; */
+                "
+            > 
+                <div  
+                    style="display: flex;
+                        flex-direction: column; 
+                        margin-bottom: 1rem;
+                        
+                    "
+                    
+                >
+                    <div 
+                        style="align-self: flex-start;
+                            margin-bottom: 0.5rem;
+                       
+                        
+                        "
+                    
+                    >
+                        <h2 
+                            style="
+                                font-size: 20px;
+                                font-weight: 500;
+                                color: #15283c; 
+                            "
+                        >
+                            My Payment Accounts 
+                            
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp;  
+                        </h2>  
+                    </div> 
+                    <div style="display: flex;flex-direction: row;justify-content: space-between;margin-top: 1rem;">
+                        <div style="display: flex;flex-direction: row;margin-top: 8px;">
+                            <div class="bread_crumb_hovering">  
+                                <u style="border-bottom: 1px solid #15283c;"> <a href="{% url 'index' %}"> <span>Dashboard</span></a> </u>
+                            </div>  
+        
+                            <div>
+                                &nbsp; / &nbsp; <span style="font-size: 11px;">My Payment Acounts</span> 
+                            </div>
+
+                        </div> 
+                        <div class="bread_crumb_hovering" style="margin-right: 40px;">  
+                            <button style="background: #0971b8;" class="btn"><a style="color: white;"  href="{% url 'add_payment_account_form' add_button_clicked=1 %}">Add Payment Account</a></button> 
+                        </div>   
+                    </div>
+                    
+                </div>  
+            </div>
+        </div>
+    </div>
+    <!-- row -->
+    <div class="row">
+        <!-- table section -->
+
+        <div class="col-md-12">
+
+            {% if ven == "Not Found" %} 
+                <div class="full" style="min-height: 320px;">
+                    <div>
+                        {% if ven == "Not Found" %}  
+                            <div class="alert alert-danger alert-dismissible" style="text-align: center;width: 380px;margin-top: 10px;margin: auto;">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                Payment Accounts list Empty!
+                            </div>  
+                        {%else%} 
+                        {% endif %}
+                        
+                    </div>
+
+
+                    <div class="full"> 
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div>
+                                <h2 class="table_heading_h2"></h2> 
+                            </div> 
+                            
+                        </div> 
+                    </div>
+                    <div class="table_section padding_infor_info">
+                        <div >
+                            
+                        </div>
+                    </div> 
+                </div>
+                    
+
+            {%else%} 
+                <div class="white_shd full" style="display: flex;flex-direction: column;">
+                    <div>
+
+                        <div  style="margin-bottom: 1rem;">
+                            <div class="full graph_head" style="background-color: #f7f7f7;">
+                                <div>
+                                    {% if ven == "Not Found" %}  
+                                        <div class="alert alert-danger alert-dismissible" style="text-align: center;width: 380px;margin-top: 10px;margin: auto;">
+                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                            Payment Accounts list Empty!
+                                        </div>  
+                                    {%else%} 
+                                    {% endif %}
+                                    
+                                </div>
+                                
+                                <div class="alert alert-success alert-dismissible hiden_now" id="alerting"   style="text-align: center;width: 380px;margin-top: 10px;margin: auto;margin-bottom: 10px;">
+                                    <button type="button" onclick="AlertSelfClose()" class="close">&times;</button>
+                                    <span id="alerttext"></span> 
+                                </div>
+                                <div style="display: flex;flex-direction: row;justify-content: space-between;">
+                                    <div>
+                                        <h2 class="table_heading_h2">My Payment Accounts List</h2> 
+                                    </div> 
+                                    <div>
+                                        <input type="text" class="styled_input_box" id="user_search_input" placeholder="Search Account" />
+                                        <button onclick="SearchFunctionality()" class="btn styled_input_search_button" type="button"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div> 
+                                
+                            </div>
+
+                            <div class="table_section padding_infor_info"  id="users_table_div">
+                                <div class="table-responsive-sm">
+                                    <table class="table"  id="narrator_table"> 
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center; vertical-align: middle;">#</th>
+                                                <th style="text-align: center; vertical-align: middle;">Account Title</th>
+                                                <th style="text-align: center; vertical-align: middle;">Account IBAN</th>
+                                                
+                                                
+                    
+                                                <th style="text-align: center; vertical-align: middle;">Actions</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {%for ven in ven %}
+
+
+
+                                                <tr>
+
+                                                    <td style="text-align: center; vertical-align: middle;">{{ forloop.counter }}</td>
+                                                    <!--<td style="text-align: center;">
+                                                        {% if ven.image %}
+                                                            <img src="{{ ven.image.url }}" alt="Product Image" class="rounded-circle" width="50" height="50">
+                                                        {% else %}
+                                                            <img src="/static/default/default-us.png" alt="Product Image" class="rounded-circle" width="50" height="50">
+                                                        {% endif %}
+                                                    </td>-->
+
+                                                    
+                                                    <td style="text-align: center; vertical-align: middle;">{{ven.account_title}}</td>
+                                                    <td style="text-align: center; vertical-align: middle;">{{ven.iban_number}}</td>
+                                                
+
+                                                    <td style="text-align: center; vertical-align: middle;">
+                                                        <div class="dropdown">
+                                                            <span class="dropdown-toggle" data-toggle="dropdown" style = "cursor:pointer; margin-left:10px; ">Actions</span> 
+                                                            <div class="dropdown-menu">
+                                                                {% comment %} <a class="dropdown-item" href="#">Edit</a>  {% endcomment %}
+                                                                <a class="dropdown-item" href="{% url 'edit_payment_account_form' ven.id 1 %}">Edit</a> 
+                                                                
+                                                                <span  onclick="DeletePaymentMethod('{{ven.id}}','true')"  class="dropdown-item" style = "cursor:pointer; ">Delete</span>
+
+                                                            </div>
+                                                        </div>     
+                                                    </td>
+                                                </tr> 
+                                            {%endfor%}   
+                                        </tbody>
+                                    </table> 
+                                </div> 
+                            </div> 
+                            <div id="newinputdiv"  style = "display:none">
+                                <input type="checkbox"   name="alertcontrol" id="alertcontrolid" value=""></input>
+                            </div> 
+
+                            
+                            <div class="table_section padding_infor_info"  id="searched_users_table_div" style="display: none;"> 
+                                <div class="table-responsive-sm">
+                                    <table class="table"   id="searched_users_table"> 
+                                        <thead>
+                                            <tr>
+                                                <th style = "width: 100px">#</th>
+                                                <th style = "width: 100px">Account Title</th>
+                                                <th style = "width: 100px">Account IBAN</th>
+                                                
+                                                                                  
+                                                <th  style = "width: 100px">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody> 
+                                        </tbody>
+                                    </table>
+                                </div> 
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="table_section"  id="pagination_div"  style="padding: 8px 35px;float: left;width: 100%;">
+                    
+                    
+                        <div class="table-responsive-sm" style="display: flex;flex-direction: column;"> 
+                            <div style="margin-bottom: 6px;">
+                                Page &nbsp; - &nbsp; {{ven.number}} &nbsp;  of  &nbsp;  {{ven.paginator.num_pages}}
+            
+                            </div>
+                            <div style="display: flex;flex-direction: row;justify-content: safe;">
+
+                                {% if  ven.paginator.num_pages  ==  1 %} 
+                            {%else%}
+
+
+                                {% if ven.number == 1 %} 
+
+                                    <div  
+                                        
+                                    >  
+                                        <span
+                                            style="background-color: #0971B8;
+
+                                                border: 2px solid #0971B8;
+                                                color: white;
+                                                padding: 8px;
+                                                text-align: center;
+                                                text-decoration: none;
+                                                display: inline-block;
+                                                font-size: 16px;
+                                                margin: 1px 2px;
+                                                border-radius: 12px;
+                                                /* padding-left: 2px;
+                                                padding-right: 2px; */
+                                            "
+                                        >
+                                            <span  style="padding-left: 2px;padding-right: 2px;">1</span>
+                                        </span>
+                                    </div>
+                
+                                    <div>
+                                        &nbsp;  &nbsp;   
+                                    </div>  
+                                {%else%}  
+
+                                    <div  
+                                        
+                                    >   
+                                        <a  
+                                            style="background-color: #ffffff;
+
+                                                border: 2px solid #0971B8;
+                                                color: #0971B8;
+                                                padding: 8px;
+                                                text-align: center;
+                                                text-decoration: none;
+                                                display: inline-block;
+                                                font-size: 16px;
+                                                margin: 1px 2px;
+                                                border-radius: 12px;
+                                                /* padding-left: 2px;
+                                                padding-right: 2px; */
+                                            "
+                                            href="?page=1"
+                                        
+                                        >
+                                            <span style="padding-left: 2px;padding-right: 2px;">1</span>
+                                        </a>
+                                    </div>
+                
+                                    <div>
+                                        &nbsp;  &nbsp;   
+                                    </div> 
+
+                                {%endif%}
+
+
+                                    {% for i in ven.paginator.page_range %}
+                                    
+                                        {% if ven.number == i %}
+                                            {% if i == 1 %} 
+                                            {%else%} 
+                                                {% if i == ven.paginator.num_pages %} 
+                                                {%else%}  
+
+                                                    <div>  
+                                                        <span   style="background-color: #0971B8;
+                                                            border: 2px solid #0971B8;
+                                                            color: white;
+                                                            padding: 8px;
+                                                            text-align: center;
+                                                            text-decoration: none;
+                                                            display: inline-block;
+                                                            font-size: 16px;
+                                                            margin: 1px 2px;
+                                                            border-radius: 12px;">{{ i }}  
+                                                        </span>
+                                                    </div>
+                                
+                                                    <div>
+                                                        &nbsp;  &nbsp;   
+                                                    </div>
+                                                    
+                                                {%endif%}
+                                            {%endif%}
+                                        {% elif i > ven.number|add:'-10' and i < ven.number|add:'10' %}
+                                            {% if i == 1 %} 
+                                            {%else%} 
+                                                {% if i == ven.paginator.num_pages %} 
+                                                {%else%} 
+
+                                                    <div>  
+                                                        <a style="background-color: #ffffff;
+                                                            border: 2px solid #0971B8;
+                                                            color: #0971B8;
+                                                            padding: 8px;
+                                                            text-align: center;
+                                                            text-decoration: none;
+                                                            display: inline-block;
+                                                            font-size: 16px;
+                                                            margin: 1px 2px;
+                                                            border-radius: 12px;" href="?page={{ i }}">{{ i }}
+                                                        </a>
+                                                    </div>
+                                
+                                                    <div>
+                                                        &nbsp;  &nbsp;   
+                                                    </div>
+                                                {%endif%}
+                                            {%endif%}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if ven.number == ven.paginator.num_pages %} 
+
+                                        <div>  
+                                            <a style="background-color: #0971B8;
+                                                border: 2px solid #0971B8;
+                                                color: white;
+                                                padding: 8px;
+                                                text-align: center;
+                                                text-decoration: none;
+                                                display: inline-block;
+                                                font-size: 16px;
+                                                margin: 1px 2px;
+                                                border-radius: 12px;" href="?page={{ven.paginator.num_pages}}">{{ven.paginator.num_pages}}
+                                            </a>
+                                        </div> 
+                                    {%else%}  
+
+                                        <div>  
+                                            <a style="background-color:  #ffffff;
+                                                border: 2px solid #0971B8;
+                                                color: #0971B8;
+                                                padding: 8px;
+                                                text-align: center;
+                                                text-decoration: none;
+                                                display: inline-block;
+                                                font-size: 16px;
+                                                margin: 1px 2px;
+                                                border-radius: 12px;" href="?page={{ven.paginator.num_pages}}">{{ven.paginator.num_pages}}
+                                            </a>
+                                        </div> 
+
+                                    {%endif%}
+
+                                {%endif%} 
+                            </div> 
+                        </div>
+                    </div>
+                </div> 
+
+            {%endif%} 
+
+        </div>
+    </div>  
+</div>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete"  >Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    const filterSearch = document.querySelector('#user_search_input');
+    filterSearch.addEventListener('keyup', function (e) {   
+        if (e.target.value.length == 0){  
+            var main_table = document.getElementById("users_table_div");
+            main_table.style.display="block";   
+
+            var pagiantion_ul_var = document.getElementById("pagination_div");
+            pagiantion_ul_var.style.display="flex"; 
+
+            var search_table = document.getElementById("searched_users_table_div");
+            search_table.style.display="none";  
+        }
+    });
+
+    function SearchFunctionality(){  
+        let search_values = $('#user_search_input').val();      
+        if (search_values == null || search_values == ""){ 
+
+            var main_table = document.getElementById("users_table_div");
+            main_table.style.display="block";   
+
+            var pagiantion_ul_var = document.getElementById("pagination_div");
+            pagiantion_ul_var.style.display="flex"; 
+
+            var search_table = document.getElementById("searched_users_table_div");
+            search_table.style.display="none"; 
+
+
+        }
+        else{
+            
+            var main_table = document.getElementById("users_table_div");
+            main_table.style.display="none";   
+
+            var pagiantion_ul_var = document.getElementById("pagination_div");
+            pagiantion_ul_var.style.display= "none"; 
+
+            var search_table = document.getElementById("searched_users_table_div");
+            search_table.style.display="block"; 
+
+            $.ajax({
+                
+                
+                url: 'my_payment_account_table_custom_search',
+                type: 'GET',
+                data : {"Account Title": search_values},
+                success : function(response) {
+
+
+                    if (response.success == false){
+
+                        console.log("error this payment account record not found");
+                        $('#searched_users_table').DataTable().destroy(); 
+                        $('#searched_users_table tbody').empty();
+
+                        $('#searched_users_table').dataTable({ 
+                            "info":false,   
+                            "paging":   false, 
+                            'destroy': true, 
+                            'searching': false,
+                            "lengthChange": false,
+                            language : {
+                                "zeroRecords": " "             
+                            },
+                        });
+
+                    
+                       $('#searched_users_table tbody').html('<tr><td colspan="3" style="text-align:center;">No records found!</td></tr>');
+
+
+                    }
+                    
+                    else{
+
+                        $('#searched_users_table').DataTable().destroy(); 
+                        $('#searched_users_table tbody').empty();
+
+                        $('#searched_users_table').dataTable({ 
+                            "info":false,   
+                            "paging":   false, 
+                            'destroy': true, 
+                            'searching': false,
+                            "lengthChange": false,
+                            language : {
+                                "zeroRecords": " "             
+                            },
+                        });
+
+                        var counter = 1;
+                        $.each(response.response.ven, function(index, item) {
+
+                            console.log(response.response.ven);
+
+                            
+                            
+
+                            const row = document.createElement('tr');
+                            row.id = "searched_row_" + item.id;
+                            var id_for_delete = "searched_row_" + item.id;
+
+
+
+                            const newcolum1Content = document.createElement('td');
+                            newcolum1Content.style = "vertical-align: middle;";
+                            
+                            const newcolum2Content = document.createElement('td');
+                            newcolum2Content.style = "vertical-align: middle;";
+                            const newcolum3Content = document.createElement('td'); 
+                            newcolum3Content.style = "vertical-align: middle;";
+
+                            //const newcolum4Content = document.createElement('td');
+                            //newcolum4Content.style = "vertical-align: middle;";
+
+                            
+                            const newcolum5Content = document.createElement('td');
+                            newcolum5Content.style = "vertical-align: middle;";
+
+    
+
+                            const actions_dropdown = document.createElement('div');
+                            actions_dropdown.className = "dropdown";
+
+                            var actions_main_span = $('<span class="dropdown-toggle" data-toggle="dropdown" style="cursor: pointer;">Actions</span>');
+
+                            const actions_dropdown_menu = document.createElement('div');
+                            actions_dropdown_menu.className = "dropdown-menu";
+
+                            
+
+
+                            const actions_div_row1 = document.createElement('div');
+                            actions_div_row1.style.display = "flex";
+                            actions_div_row1.style.flexDirection = "row";
+                            actions_div_row1.style.justifyContent = "space-evenly";
+                            
+
+                            var edit_action_href =  $('<a class="dropdown-item">Edit</a>'); 
+                            var delete_span = $('<span class="dropdown-item"  style = "cursor:pointer;">Delete</span>');
+ 
+                            
+                            edit_action_href.appendTo(actions_dropdown_menu);
+                            delete_span.appendTo(actions_dropdown_menu);
+                            
+                            actions_main_span.appendTo(actions_dropdown);
+                            actions_dropdown.appendChild(actions_dropdown_menu);
+                            newcolum5Content.appendChild(actions_dropdown);
+
+                            row.appendChild(newcolum1Content);
+                            row.appendChild(newcolum2Content);
+                            row.appendChild(newcolum3Content);
+                            //row.appendChild(newcolum4Content);
+                            row.appendChild(newcolum5Content);
+
+
+                            newcolum1Content.innerHTML= index + 1; 
+                            newcolum2Content.innerHTML= item.account_title;
+                            newcolum3Content.innerHTML= item.iban_number;
+                            
+
+                            
+
+
+                        
+                            var edit_url = "edit_payment_account_form/" + item.id + '/'+ 1;   
+
+                            edit_action_href.attr("href",edit_url);
+                            delete_span.click(function(){ DeletePaymentMethod(item.id,id_for_delete); });
+
+                            
+                            
+                            $('#searched_users_table tbody').append(row);
+                            
+                            
+
+
+                           
+                               
+                        })
+                    }
+                }
+            });
+            
+
+        }  
+    }
+
+
+
+    function DeletePaymentMethod(id,if_reload)
+    {    
+
+
+        if (if_reload == 'true'){
+
+            $('#confirmationModal').find('.modal-body').text('Are you sure you want to delete the payment method ?');
+            $('#confirmationModal').modal('show');
+
+            $('#confirmDelete').off('click').on('click', function () {
+
+                $.ajax({
+                    url: "delete_payment_account",
+                    type: "GET",
+                    data: {"payment_method_id": id},
+                    success: function(response){
+                        if (response.payment_account_name) {
+                            $('#confirmationModal').modal('hide');
+                            $( "#users_table_div" ).load(window.location.href + " #users_table_div"); 
+                            $( "#pagination_div" ).load(window.location.href + " #pagination_div");
+
+                            var message_name = response.payment_account_name.charAt(0).toUpperCase() +  response.payment_account_name.slice(1).toLowerCase()
+                            var drpodwnmjggfj = document.getElementById('alertcontrolid');
+                            var lisitngttjh = document.getElementById('alerting');
+                            lisitngttjh.style.backgroundColor = "#d4edda";
+                            if(drpodwnmjggfj.checked == false) {
+                                drpodwnmjggfj.checked = true; 
+                                $('#alerttext').html("Payment method " + message_name + ' deleted successfully ' + '!');
+                                lisitngttjh.style.display = "block";
+                            }
+                            else{
+                                if(drpodwnmjggfj.checked == true) {
+                                    drpodwnmjggfj.checked = true; 
+                                    $('#alerttext').html("Payment method " + message_name + ' deleted successfully ' + '!');
+                                    lisitngttjh.style.display = "block";
+                                }
+
+                            }
+
+                            
+                        }
+                        
+
+                    }
+                });
+
+            });
+
+        }else{
+            
+
+            $('#confirmationModal').find('.modal-body').text('Are you sure you want to delete the payment method ?');
+            $('#confirmationModal').modal('show');
+
+            $('#confirmDelete').click(function () {
+                
+                $.ajax({
+
+                    url: "delete_payment_account",
+                    type: "GET",
+                    data: {"payment_method_id": id},
+                    success: function(response){
+
+                        if(response.payment_account_name){
+
+                            var hiding_this_record = document.getElementById(if_reload);
+                            hiding_this_record.style.display = "none";
+                            $('#confirmationModal').modal('hide');
+                            $( "#users_table_div" ).load(window.location.href + " #users_table_div");
+                            var message_name = response.payment_account_name.charAt(0).toUpperCase() +  response.payment_account_name.slice(1).toLowerCase()
+
+                            var drpodwnmjggfj = document.getElementById('alertcontrolid');
+                            var lisitngttjh = document.getElementById('alerting');
+                            lisitngttjh.style.backgroundColor = "#d4edda";
+                            if(drpodwnmjggfj.checked == false) {
+                                drpodwnmjggfj.checked = true; 
+                                $('#alerttext').html("Payment Method " + message_name + ' deleted successfully ' + '!');
+                                lisitngttjh.style.display = "block";
+                            }
+                            else{
+                                if(drpodwnmjggfj.checked == true) {
+                                    drpodwnmjggfj.checked = true; 
+                                    $('#alerttext').html("Payment Method " + message_name + ' deleted successfully ' + '!');
+                                    lisitngttjh.style.display = "block";
+                                }
+
+                            }
+
+
+                            
+                        }
+                        
+                    },
+                });  
+
+            });
+        }
+    }  
+</script>
+
+<script>
+    function AlertSelfClose()
+    {  
+        var drpodwnmjggfjadty = document.getElementById('alertcontrolid');
+        var lisitngttjhatdy = document.getElementById('alerting');
+        if(drpodwnmjggfjadty.checked == true) {
+            drpodwnmjggfjadty.checked = false; 
+            lisitngttjhatdy.style.display = "none";
+        }
+
+    }
+</script>
+
+
+{% endblock %}

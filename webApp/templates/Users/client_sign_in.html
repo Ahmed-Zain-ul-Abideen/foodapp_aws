@@ -1,0 +1,257 @@
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .imagepora {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-top: 10px;
+        }
+
+        p {
+            color: #333;
+            margin: 10px 0;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .g_id_signin {
+            margin-top: 20px;
+        }
+
+        img {
+        border: 3px solid #282c34;
+        }
+        .container-fluid {
+        height: 100vh;
+        background-color: #282c34;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+        .container-fluid > div {
+        width: 85%;
+        min-width: 300px;
+        max-width: 500px;
+        }
+        .card {
+        width: 100%;
+        }
+        .social-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        }
+        .btn a, .btn a:hover {
+        color: white;
+        text-decoration: none ;
+        }
+
+        .btn-facebook {
+            color: #fff;
+            background-color: #3b5998;
+            border-color: rgba(0,0,0,0.2);
+        }
+
+        .btn-linkedin {
+            color: #fff;
+            background-color: #0E76A8;
+            border-color: rgba(0,0,0,0.2);
+        }
+
+        .btn-social {
+            position: relative;
+            padding-left: 44px;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-social:hover {
+            color: #eee;
+        }
+
+        .btn-social :first-child {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            padding: 7px;
+            font-size: 1.6em;
+            text-align: center;
+            border-right: 1px solid rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    {% if request.session.user_data %}
+        <div>
+            <p>Hi {{ request.session.user_data.given_name }} 🙂</p>
+            <p>Your email is {{ request.session.user_data.email }}</p>
+            <img src="{{ request.session.user_data.picture }}" alt="User picture">
+            <p>Click here to <a href="/logout">Sign out</a></p>
+        </div>
+    {% else %}
+
+        {% if request.session.soc_loged %}
+        {% else %}
+            {% if request.session.lnkd_loged %}
+            {% else %}
+
+                <div style="display: flex;flex-direction: column;margin: auto;width: 60%;">
+                    <div style="display: flex;width: fit-content;flex-direction: column;">
+                        <p>Welcome to Food App 🙂 </p>
+                        <p>Choose Sign in Option</p>
+                        <div id="g_id_onload"
+                            data-client_id="787045378804-27otdan5j5ts07bprfgoehi8505inpd4.apps.googleusercontent.com"
+                            data-context="signin"
+                            data-ux_mode="popup"
+                            data-login_uri="http://localhost:8000/auth-r"
+                            data-itp_support="true">
+                        </div>
+
+                        <div class="g_id_signin"
+                            data-type="standard"
+                            data-shape="pill"
+                            data-theme="filled_blue"
+                            data-text="signin_with"
+                            data-size="large"
+                            data-logo_alignment="left">
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 3rem;"></div>
+                    <div style="display: flex;width: fit-content;">
+
+                        <a class="btn btn-lg btn-social btn-facebook"  href="{% url 'social:begin' 'facebook' %}">
+                            <i class="fa fa-facebook fa-fw"></i> Sign in with Facebook
+                        </a>
+
+                       
+                    </div>
+                    <div style="padding-top: 3rem;"></div>
+                    <div style="display: flex;width: fit-content;">
+
+                        <a class="btn btn-lg btn-social btn-linkedin"  href="{{linkdnur}}">
+                            <i class="fa fa-linkedin fa-fw"></i> Sign in with Linkedin
+                        </a> 
+                    </div>
+
+                    <div class="col-md-8 mx-auto social-container my-2 order-md-1">
+                        <!-- <button class="btn btn-primary mb-2">
+                            <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
+                        </button>
+
+
+                        <button class="btn btn-primary mb-2">
+                            <a href="{{linkdnur}}">Login with Linkedin</a>
+                        </button> -->
+                        
+                        
+                        <!-- <button class="btn btn-info mb-2">
+                            <a href="{% url 'social:begin' 'linkedin-oauth2' %}">Login with LinkedIn</a>
+                        </button> -->
+                        <!-- <button class="btn btn-danger  mb-2">
+                            <a href="#">Login with Instagram</a>
+                        </button> -->
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+        
+    {% endif %}
+
+    {% if request.session.user_data %}
+    {% else %}
+
+        {% if request.session.soc_loged %} 
+            {% for ass in backends.associated %}
+            <!-- {{ass.extra_data}} -->
+            {% if ass.provider == 'facebook' %}
+                <div class="col-md-6 social-container my-2"> 
+                    <p>Food App 🙂 </p>
+                </div>
+                <div class="col-md-6 text-center">
+                    <img class="imagepora" src="{{ass.extra_data.picture.data.url}}" alt="" width="150" height="150" style="border-radius: 50%">
+                </div>
+                <div class="col-md-6 social-container my-2">                 
+                    <p> You're Signed in via {{ ass.provider }} </p>
+                    <p> Your Name:  {{ ass.extra_data.name }} </p>
+                    <!-- <p> Profile URL: <a href="{{ass.extra_data.profile_url}}">link</a></p> -->
+                    <p>Click here to <a href="/logout">Sign out</a></p>
+                </div> 
+                
+                
+            {% else %} 
+                {{ass.provider}}
+            {% endif %}
+            {% endfor %}
+        {% else %}
+            {% if request.session.lnkd_loged %}
+                <div class="col-md-6 social-container my-2"> 
+                    <p>Food App 🙂 </p>
+                </div>
+           
+                <div class="col-md-6 text-center">
+                    <img class="imagepora" src="{{request.session.lnkd_profi}}" alt="" width="150" height="150" style="border-radius: 50%">
+                </div>
+                <div class="col-md-6 social-container my-2">                 
+                    <p> You're Signed in via Linkedin </p>
+                    <p> Your Name:  {{request.session.lnkd_name}} </p>
+                    <p> Your email:  {{request.session.lnkd_email}}</p>
+                    <p>Click here to <a href="/logout">Sign out</a></p>
+                </div>
+
+                <!-- <div style="padding-top: 2rem;"></div>
+                
+                <p>Click here to <a href="/logout">Sign out</a></p> -->
+            {% else %}
+            {% endif %}
+        {% endif %}
+
+    {% endif %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+</body>
+</html>
+

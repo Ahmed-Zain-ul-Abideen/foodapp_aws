@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+    
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>FoodApp</title>
+        <link rel="icon" href="{% static 'frontend/img/favicon.png' %}">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/bootstrap.min.css' %}">
+        <!-- animate CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/animate.css' %}">
+        <!-- owl carousel CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/owl.carousel.min.css' %}">
+        <!-- themify CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/themify-icons.css">
+        <!-- flaticon CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/flaticon.css' %}">
+        <!-- font awesome CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/magnific-popup.css' %}">
+        <!-- swiper CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/slick.css' %}">
+        <link rel="stylesheet" href="{% static 'frontend/css/gijgo.min.css' %}">
+        <link rel="stylesheet" href="{% static 'frontend/css/nice-select.css' %}">
+        <link rel="stylesheet" href="{% static 'frontend/css/all.css' %}">
+        <!-- style CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}">
+    </head>
+    
+    <body>
+        
+    
+        <!-- breadcrumb start-->
+        <section class="breadcrumb breadcrumb_bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb_iner text-center">
+                            <div class="breadcrumb_iner_item">
+                                <h2>Food Menu</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- breadcrumb start-->
+    
+    
+        <!-- food_menu start-->
+        <section class="food_menu gray_bg">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-lg-5">
+                        <div class="section_tittle">
+                            <p>Popular Menu</p>
+                            <h2>Delicious Food Menu</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-12">
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active single-member" 
+                                aria-labelledby="Special-tab">
+    
+                                <div class="row">
+                                
+                                    {% for item in all_items %}
+                                        <div class="col-md-6 mb-4">
+                                            <div class="single_food_item media">
+                                                <img src="{{ item.image.url }}" style ="width:163px; height: 163px;" class="mr-3" alt="{{ item.title }}">
+                                                <div class="media-body align-self-center">
+                                                    <h3>{{ item.title }}</h3>
+                                                    <p>{{ item.description }}</p>
+                                                    <div class="row">
+                                                        <h5 style ="margin-left:10px;">PKR {{ item.price }}</h5>
+                                                        <a href="{% url 'item_order_placing_form' item.id 1 %}" class="btn" style="margin-left: 91px;margin-top: 13px;">Order Now</a>
+                                                    </div>
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- food_menu part end-->
+
+        <script>
+            const socket = new WebSocket('ws://' + window.location.host + '/ws/notifications/');
+            console.log("the sockkkkkk");
+            
+        
+            socket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                alert(data.message);  // You can update your UI with the notification here
+            };
+        
+            socket.onclose = function(e) {
+                console.error('WebSocket closed unexpectedly');
+            };
+        </script>
+        
+    
+    
+        
+        <!-- jquery plugins here-->
+        <!-- jquery -->
+        <script src="{% static 'frontend/js/jquery-1.12.1.min.js' %}"></script>
+        <!-- popper js -->
+        <script src="{% static 'frontend/js/popper.min.js' %}"></script>
+        <!-- bootstrap js -->
+        <script src="{% static 'frontend/js/bootstrap.min.js' %}"></script>
+        <!-- easing js -->
+        <script src="{% static 'frontend/js/jquery.magnific-popup.js' %}"></script>
+        <!-- swiper js -->
+        <script src="{% static 'frontend/js/swiper.min.js' %}"></script>
+        <!-- swiper js -->
+        <script src="{% static 'frontend/js/masonry.pkgd.js' %}"></script>
+        <!-- particles js -->
+        <script src="{% static 'frontend/js/owl.carousel.min.js' %}"></script>
+        <!-- swiper js -->
+        <script src="{% static 'frontend/js/slick.min.js' %}"></script>
+        <script src="{% static 'frontend/js/gijgo.min.js' %}"></script>
+        <script src="{% static 'frontend/js/jquery.nice-select.min.js' %}"></script>
+        <!-- custom js -->
+        <script src="{% static 'frontend/js/custom.js' %}"></script>
+    </body>
+    
+    </html>

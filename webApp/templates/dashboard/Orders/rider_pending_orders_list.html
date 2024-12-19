@@ -1,0 +1,586 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Pending Rider Orders List{% endblock %}
+{% block content %}  
+<div class="container-fluid">
+   {% load static %}
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div
+                style="display: flex;
+                    flex-direction: column;
+                    background: #fff;
+                    margin-top: 0;
+                    margin-bottom: 30px;
+                    padding: 25px 0px 0px 38px;
+                    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
+                    margin-left: -40px;
+                    margin-right: -40px;
+                    /* position: relative; */
+                "
+            > 
+                <div  
+                    style="display: flex;
+                        flex-direction: column; 
+                        margin-bottom: 1rem;
+                        
+                    "
+                    
+                >
+                    <div 
+                        style="align-self: flex-start;
+                            margin-bottom: 0.5rem;
+                       
+                        
+                        "
+                    
+                    >
+                        <h2 
+                            style="
+                                font-size: 20px;
+                                font-weight: 500;
+                                color: #15283c; 
+                            "
+                        >
+                            Pending Rider Orders List
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  
+                            {% if ven == "Not Found" %}
+                                <input type="checkbox" class="hidden" name="venvalue" id="venvalueid" checked />
+                            {% else %}
+                                <input type="checkbox" class="hidden" name="venvalue" id="venvalueid" />
+                            {% endif %}
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp;  
+                        </h2>  
+                    </div> 
+                    <div style="display: flex;flex-direction: row;justify-content: space-between;margin-top: 1rem;">
+                        <div style="display: flex;flex-direction: row;margin-top: 8px;">
+                            <div class="bread_crumb_hovering">  
+                                <u style="border-bottom: 1px solid #15283c;"> <a href="{% url 'index' %}"> <span>Dashboard</span></a> </u>
+                            </div>  
+        
+                            <div>
+                                &nbsp; / &nbsp; <span style="font-size: 11px;">Orders</span> 
+                            </div>
+
+                        </div> 
+                        
+                          
+                    </div>
+                    
+                    
+                    
+                </div>  
+            </div>
+        </div>
+    </div>
+    <!-- row -->
+    <div class="row">
+        <!-- table section -->
+
+        <div class="col-md-12">
+
+            <div>
+                {% if ven == "Not Found" %}  
+                    <div class="alert alert-danger alert-dismissible" style="text-align: center;width: 380px;margin-top: 10px;margin: auto;margin-bottom: 10px;">
+                        {% comment %} <button type="button" class="close" data-dismiss="alert">&times;</button> {% endcomment %}
+                        Order List Empty!
+                    </div>  
+                {%else%} 
+                {% endif %}
+                
+            </div>
+
+            {% if ven == "Not Found" %} 
+                <div class="full" style="min-height: 320px;">
+
+
+                    <div class="full"> 
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div>
+                                <h2 class="table_heading_h2"></h2> 
+                            </div> 
+                            
+                        </div> 
+                    </div>
+                    <div class="table_section padding_infor_info">
+                        <div >
+                            
+                        </div>
+                    </div> 
+                </div>
+                    
+
+            {%else%} 
+                <div id="mainflex" class="white_shd full" style="display: flex;flex-direction: column;">
+                    <div>
+
+                        <div  style="margin-bottom: 1rem;">
+                            <div class="full graph_head" style="background-color: #f7f7f7;">
+                                
+                                
+                                <div class="alert alert-success alert-dismissible hiden_now" id="alerting"   style="text-align: center;width: 380px;margin-top: 10px;margin: auto;margin-bottom: 10px;">
+                                    <button type="button" onclick="AlertSelfClose()" class="close">&times;</button>
+                                    <span id="alerttext"></span> 
+                                </div>
+                                
+                                <div style="display: flex;flex-direction: row;justify-content: space-between;">
+                                    <div>
+                                        <h2 class="table_heading_h2">Rider Pending Orders List</h2> 
+                                    </div> 
+                                    
+                                    
+                                </div> 
+                                
+                                
+                            </div>
+
+                            <div class="table_section padding_infor_info"  id="users_table_div">
+                                <div class="table-responsive-sm">
+                                    <table class="table"  id="narrator_table"> 
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th style="text-align: center; vertical-align: middle;">Order Id</th>
+                                                <th style="text-align: center; vertical-align: middle;">Name</th>
+                                                <th style="text-align: center; vertical-align: middle;">Contact</th> 
+                                                <th style="text-align: center; vertical-align: middle;">Status</th>
+                                                <th style="text-align: center; vertical-align: middle;">Riders</th>
+                                                
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {%for ven in ven %}
+
+
+
+                                                <tr>
+
+                                                    <td style="text-align: center; vertical-align: middle;">{{ven.id}}</td> 
+                                                    <td style="text-align: center; vertical-align: middle;">{{ven.customer_name}}</td>
+                                                    <td style="text-align: center; vertical-align: middle;">{{ven.contact}}</td>  
+          
+                                                    <td style="text-align: center; vertical-align: middle;">{{ven.status}}</td>
+                                                    <td style="text-align: center; vertical-align: middle;">
+                                                        <div class="dropdown">
+                                                            
+                                                                
+                                                            <div style="width: 120px; margin-left: 10px;">
+                                                                <select id="dropdown_{{ ven.id }}" name="selected_item_cat_dropdown_{{ ven.id }}" class="custom-dropdown" style="margin-left: 10px; width:162px;">
+
+                                                                    <option value="" selected disabled>Select Rider</option>
+                                                                    
+                                                                    
+
+                                                                    
+                                                                    {% for rider in all_rider_list %}
+
+
+                                                                        
+                                                                        
+                                                                        {% if rider.name == ven.status %}
+
+                                                                            
+                                                                            <option value="{{ rider.id }}" selected>{{rider.name }}</option>
+                                                                        {% else %}
+                                                                            <option value="{{ rider.id }}" >{{ rider.name }}</option>
+                                                                        {% endif %}
+                                                                        
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                                
+
+                                                            
+                                                        </div>     
+                                                    </td>
+
+
+
+                                                    {% comment %} <td style="text-align: center; vertical-align: middle;">
+                                                        <div class="dropdown">
+                                                            <span class="dropdown-toggle" data-toggle="dropdown" style = "cursor:pointer; margin-left:10px; ">Actions</span> 
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item" href="#">Assign Rider</a> 
+                                                            </div>
+                                                        </div>     
+                                                    </td> {% endcomment %}
+                                                </tr> 
+                                            {%endfor%}   
+                                        </tbody>
+                                    </table> 
+                                </div> 
+                            </div> 
+                            <div id="newinputdiv"  style = "display:none">
+                                <input type="checkbox"   name="alertcontrol" id="alertcontrolid" value=""></input>
+                                
+
+                            </div> 
+                            
+                            {% comment %} <div class="table_section padding_infor_info"  id="searched_users_table_div" style="display: none;"> 
+                                <div class="table-responsive-sm">
+                                    <table class="table"   id="searched_users_table"> 
+                                        <thead>
+                                            <tr>
+                                                <th style = "width: 100px">Order Id</th>
+                                                <th style = "width: 100px">Name</th>
+                                                <th style = "width: 100px">Total Price</th>
+                                                <th style = "width: 100px">Status</th>
+                                                <th style = "width: 100px">Payment Method</th>
+                                                <th  style = "width: 100px">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody> 
+                                        </tbody>
+                                    </table>
+                                </div> 
+                            </div> {% endcomment %}
+
+                            
+                            
+                        </div>
+                        
+                    </div>
+                    <div class="table_section"  id="pagination_div"  style="padding: 8px 35px;float: left;width: 100%;">
+                    
+                    
+                        <div class="table-responsive-sm" style="display: flex;flex-direction: column;"> 
+                            <div style="margin-bottom: 6px;">
+                                Page &nbsp; - &nbsp; {{ven.number}} &nbsp;  of  &nbsp;  {{ven.paginator.num_pages}}
+            
+                            </div>
+                            <div style="display: flex;flex-direction: row;justify-content: safe;">
+
+                                {% if  ven.paginator.num_pages  ==  1 %} 
+                            {%else%}
+
+
+                                {% if ven.number == 1 %} 
+
+                                    <div  
+                                        
+                                    >  
+                                        <span
+                                            style="background-color: #0971B8;
+
+                                                border: 2px solid #0971B8;
+                                                color: white;
+                                                padding: 8px;
+                                                text-align: center;
+                                                text-decoration: none;
+                                                display: inline-block;
+                                                font-size: 16px;
+                                                margin: 1px 2px;
+                                                border-radius: 12px;
+                                                /* padding-left: 2px;
+                                                padding-right: 2px; */
+                                            "
+                                        >
+                                            <span  style="padding-left: 2px;padding-right: 2px;">1</span>
+                                        </span>
+                                    </div>
+                
+                                    <div>
+                                        &nbsp;  &nbsp;   
+                                    </div>  
+                                {%else%}  
+
+                                    <div  
+                                        
+                                    >   
+                                        <a  
+                                            style="background-color: #ffffff;
+
+                                                border: 2px solid #0971B8;
+                                                color: #0971B8;
+                                                padding: 8px;
+                                                text-align: center;
+                                                text-decoration: none;
+                                                display: inline-block;
+                                                font-size: 16px;
+                                                margin: 1px 2px;
+                                                border-radius: 12px;
+                                                /* padding-left: 2px;
+                                                padding-right: 2px; */
+                                            "
+                                            href="?page=1"
+                                        
+                                        >
+                                            <span style="padding-left: 2px;padding-right: 2px;">1</span>
+                                        </a>
+                                    </div>
+                
+                                    <div>
+                                        &nbsp;  &nbsp;   
+                                    </div> 
+
+                                {%endif%}
+
+
+                                    {% for i in ven.paginator.page_range %}
+                                    
+                                        {% if ven.number == i %}
+                                            {% if i == 1 %} 
+                                            {%else%} 
+                                                {% if i == ven.paginator.num_pages %} 
+                                                {%else%}  
+
+                                                    <div>  
+                                                        <span   style="background-color: #0971B8;
+                                                            border: 2px solid #0971B8;
+                                                            color: white;
+                                                            padding: 8px;
+                                                            text-align: center;
+                                                            text-decoration: none;
+                                                            display: inline-block;
+                                                            font-size: 16px;
+                                                            margin: 1px 2px;
+                                                            border-radius: 12px;">{{ i }}  
+                                                        </span>
+                                                    </div>
+                                
+                                                    <div>
+                                                        &nbsp;  &nbsp;   
+                                                    </div>
+                                                    
+                                                {%endif%}
+                                            {%endif%}
+                                        {% elif i > ven.number|add:'-10' and i < ven.number|add:'10' %}
+                                            {% if i == 1 %} 
+                                            {%else%} 
+                                                {% if i == ven.paginator.num_pages %} 
+                                                {%else%} 
+
+                                                    <div>  
+                                                        <a style="background-color: #ffffff;
+                                                            border: 2px solid #0971B8;
+                                                            color: #0971B8;
+                                                            padding: 8px;
+                                                            text-align: center;
+                                                            text-decoration: none;
+                                                            display: inline-block;
+                                                            font-size: 16px;
+                                                            margin: 1px 2px;
+                                                            border-radius: 12px;" href="?page={{ i }}">{{ i }}
+                                                        </a>
+                                                    </div>
+                                
+                                                    <div>
+                                                        &nbsp;  &nbsp;   
+                                                    </div>
+                                                {%endif%}
+                                            {%endif%}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if ven.number == ven.paginator.num_pages %} 
+
+                                        <div>  
+                                            <a style="background-color: #0971B8;
+                                                border: 2px solid #0971B8;
+                                                color: white;
+                                                padding: 8px;
+                                                text-align: center;
+                                                text-decoration: none;
+                                                display: inline-block;
+                                                font-size: 16px;
+                                                margin: 1px 2px;
+                                                border-radius: 12px;" href="?page={{ven.paginator.num_pages}}">{{ven.paginator.num_pages}}
+                                            </a>
+                                        </div> 
+                                    {%else%}  
+
+                                        <div>  
+                                            <a style="background-color:  #ffffff;
+                                                border: 2px solid #0971B8;
+                                                color: #0971B8;
+                                                padding: 8px;
+                                                text-align: center;
+                                                text-decoration: none;
+                                                display: inline-block;
+                                                font-size: 16px;
+                                                margin: 1px 2px;
+                                                border-radius: 12px;" href="?page={{ven.paginator.num_pages}}">{{ven.paginator.num_pages}}
+                                            </a>
+                                        </div> 
+
+                                    {%endif%}
+
+                                {%endif%} 
+                            </div> 
+                        </div>
+                    </div>
+                </div> 
+
+            {%endif%} 
+
+        </div>
+    </div>  
+</div>
+
+<div class="modal fade" id="confirmationModalBtn" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabelBtn" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabelBtn">Confirmation</h5>
+                <button type="button" class="close" id="crossApproved" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>  
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancleApproved">Cancel</button>
+                <button type="button" class="btn btn-success" id="confirmApproved"  >Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    const socket = new WebSocket('ws://' + window.location.host + '/ws/notifications_listing_pag/');
+    console.log("listing sockkkkkk");
+    
+
+    socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        var ven_data = $('#venvalueid'); // Remove the '#' from the ID
+        console.log("ven value check ", ven_data);
+        
+        if (ven_data.prop('checked')) {
+            console.log("in if check");
+            
+            window.location.reload(); // Use 'window.location.reload()' instead of 'window.reload()'
+        } else {
+            console.log("in else check");
+            // alert(data.message);  // You can update your UI with the notification here
+            $("#users_table_div").load(window.location.href + " #users_table_div");
+            $("#notif_bell_div").load(window.location.href + " #notif_bell_div");
+        }
+
+    };
+
+    socket.onclose = function(e) {
+        console.error('In listing WebSocket closed unexpectedly');
+    };
+</script>
+
+
+<script>
+    function AlertSelfClose()
+    {  
+        var drpodwnmjggfjadty = document.getElementById('alertcontrolid');
+        var lisitngttjhatdy = document.getElementById('alerting');
+        if(drpodwnmjggfjadty.checked == true) {
+            drpodwnmjggfjadty.checked = false; 
+            lisitngttjhatdy.style.display = "none";
+        }
+
+    }
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        
+        $(document).on('change', 'select[name^="selected_item_cat_dropdown_"]', function() {
+            var selectedRoleId = $(this).val();
+            console.log('Selected Rider ID:', selectedRoleId);
+
+            var venId = $(this).attr('id').split('_')[1];
+            console.log('Order ID (venId):', venId);
+            
+            $('#confirmationModalBtn').find('.modal-body').text('Are you sure you want to forcely assign order to rider?');
+            $('#confirmationModalBtn').modal('show');
+
+            $('#confirmApproved').off('click').on('click', function () {
+                
+                
+                $.ajax({
+                    url: 'assign_rider_orders',  
+                    type: 'POST',
+                    data: {
+                        'rider_id': selectedRoleId,
+                        'ven_id': venId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'  
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        $('#confirmationModalBtn').modal('hide');
+                        $('#server_message').hide();
+                        if (response.last_one == 'yes'){
+                            window.location.reload();
+                        }else{
+                            $( "#users_table_div" ).load(window.location.href + " #users_table_div");
+                            $( "#notif_bell_div" ).load(window.location.href + " #notif_bell_div");
+                        }
+                        //location.reload(); 
+
+
+                        var drpodwnmjggfj = document.getElementById('alertcontrolid');
+                        var lisitngttjh = document.getElementById('alerting');
+                        lisitngttjh.style.backgroundColor = "#d4edda";
+                        if(drpodwnmjggfj.checked == false) {
+                            drpodwnmjggfj.checked = true; 
+                            $('#alerttext').html('Rider assigned succesfully!');
+                            lisitngttjh.style.display = "block";
+                        }
+                        else{
+                            if(drpodwnmjggfj.checked == true) {
+                                drpodwnmjggfj.checked = true; 
+                                $('#alerttext').html('Rider assigned succesfully!');
+                                lisitngttjh.style.display = "block";
+                            }
+
+                        }
+                        
+                    },
+                    error: function(xhr, errmsg, err) {
+                        console.log(response);
+                        $('#confirmationModalBtn').modal('hide');
+                        $('#server_message').hide();
+                        $( "#users_table_div" ).load(window.location.href + " #users_table_div");
+                        $( "#notif_bell_div" ).load(window.location.href + " #notif_bell_div"); 
+
+
+                        var drpodwnmjggfj = document.getElementById('alertcontrolid');
+                        var lisitngttjh = document.getElementById('alerting');
+                        lisitngttjh.style.backgroundColor = "#d4edda";
+                        if(drpodwnmjggfj.checked == false) {
+                            drpodwnmjggfj.checked = true; 
+                            $('#alerttext').html('Error updating status!');
+                            lisitngttjh.style.display = "block";
+                        }
+                        else{
+                            if(drpodwnmjggfj.checked == true) {
+                                drpodwnmjggfj.checked = true; 
+                                $('#alerttext').html('Error updating status!');
+                                lisitngttjh.style.display = "block";
+                            }
+
+                        }
+                        
+                    }
+                });
+            });
+
+            $('#cancleApproved').off('click').on('click', function () {
+                $( "#users_table_div" ).load(window.location.href + " #users_table_div");
+             
+            });
+            $('#crossApproved').off('click').on('click', function () {
+                $( "#users_table_div" ).load(window.location.href + " #users_table_div");
+             
+            });
+        });
+        
+    });
+</script>
+
+
+
+{% endblock %}

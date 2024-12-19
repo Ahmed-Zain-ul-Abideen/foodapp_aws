@@ -1,0 +1,240 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Order Detail{% endblock %}
+{% block content %}  
+<div class="container-fluid">
+   {% load static %}
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div
+                style="display: flex;
+                    flex-direction: column;
+                    background: #fff;
+                    margin-top: 0;
+                    margin-bottom: 30px;
+                    padding: 25px 0px 0px 38px;
+                    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
+                    margin-left: -40px;
+                    margin-right: -40px;
+                    /* position: relative; */
+                "
+            > 
+                <div  
+                    style="display: flex;
+                        flex-direction: column; 
+                        margin-bottom: 1rem;
+                        
+                    "
+                    
+                >
+                    <div 
+                        style="align-self: flex-start;
+                            margin-bottom: 0.5rem;
+                       
+                        
+                        "
+                    
+                    >
+                        <h2 
+                            style="
+                                font-size: 20px;
+                                font-weight: 500;
+                                color: #15283c; 
+                            "
+                        >
+                            Order Detail
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp;
+                        </h2>  
+                    </div>
+                    <div style="display: flex;flex-direction: row;justify-content: space-between;margin-top: 1rem;">
+                        <div style="display: flex;flex-direction: row;margin-top: 13px;">
+                            <div class="bread_crumb_hovering">  
+                                <u style="border-bottom: 1px solid #15283c;"> <a href="{% url 'index' %}"> <span>Dashboard</span></a> </u>
+                            </div> 
+                            
+                            
+
+                            <div>
+                                &nbsp; / &nbsp; <span style="font-size: 11px;">Order Details</span> 
+                            </div> 
+
+                        </div>
+                          
+                    </div> 
+                    
+                </div> 
+                
+            </div> 
+        </div>
+    </div> 
+
+    <div class="row column1">
+        <div class="col-md-12">
+            <div class="white_shd full margin_bottom_30">
+                <div style = "margin-top: 20px">
+                    {% csrf_token %} 
+                    {% if messages %} 
+                        {% for message in messages %} 
+                            <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible" {% endif %} style="text-align: center;width: 380px;margin-top: 10px;margin: auto;margin-bottom: 10px;">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {{ message }}
+                                <span id="alerttext"></span>
+                            </div> 
+                        {% endfor %} 
+                    {% endif %} 
+                
+                    
+                    
+                    
+                </div>
+                <div>
+                
+                    <div class="full graph_head">
+                        <div class="heading1 margin_0">
+                            <h2>Customer Detail</h2>
+                        </div>
+                    </div>
+
+                    <div class="full price_table padding_infor_info">
+                        <div class="row">
+                            
+                            <div class="col-lg-12">
+                                <div class="full dis_flex center_text"> 
+                                    
+                                    {% load static %}  
+
+                                    {% comment %} <div class="avatar-upload"  style="margin: 0px;"> 
+                                        <div class="avatar-preview">
+                                            {% if item_instance.image %} 
+                                                <div id="imagePreview" style="background-image: url('{{ item_instance.image.url }}');">
+                                                </div>
+                                            {% else %}
+                                                <div id="imagePreview" style="background-image: url('{{ STATIC_URL }}default/default-us.png');">
+                                                </div>
+                                            {% endif %} 
+                                        </div>
+                                    </div> {% endcomment %}
+
+                                    <div class="profile_contant"> 
+                                        
+                                        <div class="contact_inner" style="margin-top: 12px;">
+                                            <h3>{{order_instance.customer_name}}</h3>
+                                            <p ><strong>Contact: </strong>{{order_instance.contact}}</p>
+                                            <p ><strong>Address: </strong>{{order_instance.address_details}}</p>
+                                            <p ><strong>Payment Method: </strong>
+                                                {% if order_instance.is_cod %}
+                                                    Cash on Delivery
+                                                {% else %}
+                                                    Online Payment
+                                                {% endif %}
+                                                
+                                            
+                                            </p>
+                                            
+                                        </div>                                        
+                                    </div>
+
+                                                    
+
+                                    
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div style = "margin-top:100px;">            
+                    <div class="full graph_head">
+                        <div class="heading1 margin_0">
+                            <h2>Order Detail</h2>
+                        </div>
+                    </div>
+
+                    <div class="full price_table padding_infor_info">
+                        <div class="row">
+                            
+                            <div class="col-lg-12">
+                                <div class="full dis_flex center_text"> 
+                                    
+                                    {% load static %}  
+                                    <div class="profile_contant"> 
+                                        
+                                        {% if single_order_flag %}
+                                            <div class="contact_inner" style="margin-top: 12px;">
+                                                
+                                                <h3>Order Items Details</h3>
+                                                <ul>
+                                                    {% for item in order_items %}
+                                                        <li>
+                                                            <strong>{{ item.title }}</strong><br>
+                                                            Price: PKR {{ item.price }}<br>
+                                                            Description: {{ item.description }}<br>
+                                                            
+                                                        </li>
+                                                        &nbsp;
+                                                    
+                                                    {% endfor %}
+                                                </ul>                                 
+                                            </div>
+                                        {% else %}
+                                        {% endif %}
+
+                                        {% if menu_order_flag %}
+                                            <div class="contact_inner" style="margin-top: 12px;">
+                                                <h3>Order Menu Details</h3>
+                                                <ul>
+                                                    {% for menu in order_menus %}
+                                                        <li>
+                                                            <strong>{{ menu.title }}</strong><br>
+                                                            Price: PKR {{ menu.total_price }}<br>
+                                                            Category: {{ menu.category.title }}<br>
+                                                            
+                                                        </li>
+                                                        &nbsp;
+                                                    
+                                                    {% endfor %}
+                                                </ul>                  
+                                                
+                                            </div>
+                                        {% else %}
+                                        {% endif %}
+
+                                        {% if deal_order_flag %}
+                                            <div class="contact_inner" style="margin-top: 12px;">
+                                                <h3>Order Deal Details</h3>
+                                                <ul>
+                                                    {% for deal in order_deals %}
+                                                        <li>
+                                                            <strong>{{ deal.title }}</strong><br>
+                                                            Price: PKR {{ deal.price }}<br>
+                                                            Category: {{ deal.description }}<br>
+                                                            
+                                                        </li>
+                                                        &nbsp;
+                                                    
+                                            
+                                                    {% endfor %}
+                                                </ul>                  
+                                                
+                                            </div>
+                                        {% else %}
+                                        {% endif %}
+                                        
+                                        
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

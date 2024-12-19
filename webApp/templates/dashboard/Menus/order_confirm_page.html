@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+    
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>FoodApp</title>
+        <link rel="icon" href="{% static 'frontend/img/favicon.png' %}">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/bootstrap.min.css' %}">
+        <!-- animate CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/animate.css' %}">
+        <!-- owl carousel CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/owl.carousel.min.css' %}">
+        <!-- themify CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/themify-icons.css">
+        <!-- flaticon CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/flaticon.css' %}">
+        <!-- font awesome CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/magnific-popup.css' %}">
+        <!-- swiper CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/slick.css' %}">
+        <link rel="stylesheet" href="{% static 'frontend/css/gijgo.min.css' %}">
+        <link rel="stylesheet" href="{% static 'frontend/css/nice-select.css' %}">
+        <link rel="stylesheet" href="{% static 'frontend/css/all.css' %}">
+        <!-- style CSS -->
+        <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}">
+    </head>
+    
+    <body>
+        
+    
+        <!-- breadcrumb start-->
+        <section class="breadcrumb breadcrumb_bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb_iner text-center">
+                            <div class="breadcrumb_iner_item">
+                                <h2>Order Confirmation</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- breadcrumb start-->
+    
+    
+        <!-- Inner part start-->
+       
+        <section class="order-confirmation" style= "margin-top:40px;">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="confirmation-content text-center">
+                            <h3>Order Detail</h3>
+                            <p>Your order has been placed successfully!</p>
+                            <p class="order-number"><strong>Order Number:</strong> {{order_instance.id}}</p>
+                            <p class="order-number"><strong>Total Price:</strong> {{order_instance.total_price}}</p>
+                            <p>To confirm your order, please WhatsApp the order number along with a screenshot of your payment.</p>
+                            <p class="order-number"><strong>WhatsApp:</strong> +92 332 557 3305</p>
+
+
+                            
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="confirmation-content text-center">
+                           
+                            <div class="account-info">
+                                <h3>Account Detail</h3>
+                                <p>Please send your payment to the following accounts:</p>
+                                <ul class="list-unstyled">
+                                    {% for item in Accounts %}
+                                        <li><strong>Bank Account:</strong> {{item.iban_number}} ({{item.account_title}})</li>
+                                    
+                                    {% endfor %}
+                                    
+                                    
+                                </ul>
+                            </div>
+
+                            <a href="{% url 'order_item_listing_page' %}" class="btn btn-success mt-3">Explore More Items</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Inner part end-->
+
+        
+        
+    
+    
+        
+        <!-- jquery plugins here-->
+        <!-- jquery -->
+        <script src="{% static 'frontend/js/jquery-1.12.1.min.js' %}"></script>
+        <!-- popper js -->
+        <script src="{% static 'frontend/js/popper.min.js' %}"></script>
+        <!-- bootstrap js -->
+        <script src="{% static 'frontend/js/bootstrap.min.js' %}"></script>
+        <!-- easing js -->
+        <script src="{% static 'frontend/js/jquery.magnific-popup.js' %}"></script>
+        <!-- swiper js -->
+        <script src="{% static 'frontend/js/swiper.min.js' %}"></script>
+        <!-- swiper js -->
+        <script src="{% static 'frontend/js/masonry.pkgd.js' %}"></script>
+        <!-- particles js -->
+        <script src="{% static 'frontend/js/owl.carousel.min.js' %}"></script>
+        <!-- swiper js -->
+        <script src="{% static 'frontend/js/slick.min.js' %}"></script>
+        <script src="{% static 'frontend/js/gijgo.min.js' %}"></script>
+        <script src="{% static 'frontend/js/jquery.nice-select.min.js' %}"></script>
+        <!-- custom js -->
+        <script src="{% static 'frontend/js/custom.js' %}"></script>
+    </body>
+    
+    </html>

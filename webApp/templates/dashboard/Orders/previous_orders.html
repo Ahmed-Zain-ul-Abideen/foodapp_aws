@@ -1,0 +1,821 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Previous Orders List{% endblock %}
+{% block content %}  
+<div class="container-fluid">
+   {% load static %}
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div
+                style="display: flex;
+                    flex-direction: column;
+                    background: #fff;
+                    margin-top: 0;
+                    margin-bottom: 30px;
+                    padding: 25px 0px 0px 38px;
+                    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
+                    margin-left: -40px;
+                    margin-right: -40px;
+                    /* position: relative; */
+                "
+            > 
+                <div  
+                    style="display: flex;
+                        flex-direction: column; 
+                        margin-bottom: 1rem;
+                        
+                    "
+                    
+                >
+                    <div 
+                        style="align-self: flex-start;
+                            margin-bottom: 0.5rem;
+                       
+                        
+                        "
+                    
+                    >
+                        <h2 
+                            style="
+                                font-size: 20px;
+                                font-weight: 500;
+                                color: #15283c; 
+                            "
+                        >
+                            Previous Orders
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp;  
+                        </h2>  
+                    </div> 
+                    <div style="display: flex;flex-direction: row;justify-content: space-between;margin-top: 1rem;">
+                        <div style="display: flex;flex-direction: row;margin-top: 8px;">
+                            <div class="bread_crumb_hovering">  
+                                <u style="border-bottom: 1px solid #15283c;"> <a href="{% url 'index' %}"> <span>Dashboard</span></a> </u>
+                            </div>  
+        
+                            <div>
+                                &nbsp; / &nbsp; <span style="font-size: 11px;">Prevoius Orders</span> 
+                            </div>
+
+                        </div> 
+                          
+                    </div>
+                    
+                </div>  
+            </div>
+        </div>
+    </div>
+    <!-- row -->
+    <div class="row">
+        <!-- table section -->
+
+        <div class="col-md-12">
+
+            <div>
+                {% if ven == "Not Found" %}  
+                    <div class="alert alert-danger alert-dismissible" style="text-align: center;width: 380px;margin-top: 10px;margin: auto;margin-bottom: 10px;">
+                        {% comment %} <button type="button" class="close" data-dismiss="alert">&times;</button> {% endcomment %}
+                        Order List Empty!
+                    </div>  
+                {%else%} 
+                {% endif %}
+                
+            </div>
+
+            {% if ven == "Not Found" %} 
+                <div class="full" style="min-height: 320px;">
+
+
+                    <div class="full"> 
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;">
+                            <div>
+                                <h2 class="table_heading_h2"></h2> 
+                            </div> 
+                            
+                        </div> 
+                    </div>
+                    <div class="table_section padding_infor_info">
+                        <div >
+                            
+                        </div>
+                    </div> 
+                </div>
+                    
+
+            {%else%} 
+                <div id="mainflex" class="white_shd full" style="display: flex;flex-direction: column;">
+                    <div>
+
+                        <div  style="margin-bottom: 1rem;">
+                            <div class="full graph_head" style="background-color: #f7f7f7;">
+                                
+                                
+                                <div class="alert alert-success alert-dismissible hiden_now" id="alerting"   style="text-align: center;width: 380px;margin-top: 10px;margin: auto;margin-bottom: 10px;">
+                                    <button type="button" onclick="AlertSelfClose()" class="close">&times;</button>
+                                    <span id="alerttext"></span> 
+                                </div>
+                                
+                                <div style="display: flex;flex-direction: row;justify-content: space-between;">
+                                    <div>
+                                        <h2 class="table_heading_h2">Previous Orders List</h2> 
+                                    </div> 
+                                    <div>
+                                        <input type="text" class="styled_input_box" id="user_search_input" placeholder="Search Order ID" />
+                                        <button onclick="SearchFunctionality()" class="btn styled_input_search_button" type="button"><i class="fa fa-search"></i></button>
+                                        
+                                        
+                                    </div>
+                                    
+                                </div> 
+                                
+                                
+                            </div>
+
+                            <div class="table_section padding_infor_info"  id="users_table_div">
+                                <div class="table-responsive-sm">
+                                    <table class="table"  id="narrator_table"> 
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th style="text-align: center; vertical-align: middle;">Order Id</th>
+                                                <th style="text-align: center; vertical-align: middle;">Name</th>
+                                                <th style="text-align: center; vertical-align: middle;">Total Price</th> 
+                                                <th style="text-align: center; vertical-align: middle;">Kitchen Id </th> 
+                                                <th style="text-align: center; vertical-align: middle;">Status</th>
+                                                <th style="text-align: center; vertical-align: middle;">Actions</th>
+                                                <th style="text-align: center; vertical-align: middle;">Add Notes</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {%for ven in ven %}
+
+
+
+                                                <tr>
+
+                                                    
+
+                                                    <td style="text-align: center; vertical-align: middle;">{{ven.id}}</td> 
+                                                    <td style="text-align: center; vertical-align: middle;">{{ven.user}}</td>
+                                                    <td style="text-align: center; vertical-align: middle;">{{ven.total_price}}</td>
+                                                    <td style="text-align: center; vertical-align: middle;">{{ven.kitchen.pk}}</td>    
+                                                    
+                                                    {% load webApp_extras %}
+                                                    {% get_role_modules as role_modules %}
+                                                    
+
+                                                    
+                                                    <td style="text-align: center; vertical-align: middle;">{{ven.status}}</td>
+                                                    
+
+                                                    
+
+
+
+
+                                                    <td style="text-align: center; vertical-align: middle;">
+                                                        <div class="dropdown">
+                                                            <span class="dropdown-toggle" data-toggle="dropdown" style = "cursor:pointer; margin-left:10px; ">Actions</span> 
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item" href="{% url 'order_detail' ven.id %}">View Detail</a> 
+                                                                
+
+                                                            </div>
+                                                        </div>     
+                                                    </td>
+                                                    <td style="text-align: center; vertical-align: middle;">
+                                                        <a style="color: Blue; cursor: pointer;" onclick="AddNote('{{ven.id}}')">
+                                                            &#43;
+                                                        </a>
+                                                    </td>
+                                                </tr> 
+                                            {%endfor%}   
+                                        </tbody>
+                                    </table> 
+                                </div> 
+                            </div> 
+                            <div id="newinputdiv"  style = "display:none">
+                                <input type="checkbox"   name="alertcontrol" id="alertcontrolid" value=""></input>
+                            </div> 
+                            <div class="table_section padding_infor_info"  id="searched_users_table_div" style="display: none;"> 
+                                <div class="table-responsive-sm">
+                                    <table class="table"   id="searched_users_table"> 
+                                        <thead>
+                                            <tr>
+                                                <th style = "width: 100px">Order Id</th>
+                                                <th style = "width: 100px">Name</th>
+                                                <th style = "width: 100px">Total Price</th>
+                                                <th style = "width: 100px">Kitchen Id</th>
+                                                <th style = "width: 100px">Status</th>
+                                                <th style = "width: 100px">Payment Method</th>
+                                                <th  style = "width: 100px">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody> 
+                                        </tbody>
+                                    </table>
+                                </div> 
+                            </div>
+
+                            
+                            
+                        </div>
+                        
+                    </div>
+                    <div class="table_section"  id="pagination_div"  style="padding: 8px 35px;float: left;width: 100%;">
+                    
+                    
+                        <div class="table-responsive-sm" style="display: flex;flex-direction: column;"> 
+                            <div style="margin-bottom: 6px;">
+                                Page &nbsp; - &nbsp; {{ven.number}} &nbsp;  of  &nbsp;  {{ven.paginator.num_pages}}
+            
+                            </div>
+                            <div style="display: flex;flex-direction: row;justify-content: safe;">
+
+                                {% if  ven.paginator.num_pages  ==  1 %} 
+                            {%else%}
+
+
+                                {% if ven.number == 1 %} 
+
+                                    <div  
+                                        
+                                    >  
+                                        <span
+                                            style="background-color: #0971B8;
+
+                                                border: 2px solid #0971B8;
+                                                color: white;
+                                                padding: 8px;
+                                                text-align: center;
+                                                text-decoration: none;
+                                                display: inline-block;
+                                                font-size: 16px;
+                                                margin: 1px 2px;
+                                                border-radius: 12px;
+                                                /* padding-left: 2px;
+                                                padding-right: 2px; */
+                                            "
+                                        >
+                                            <span  style="padding-left: 2px;padding-right: 2px;">1</span>
+                                        </span>
+                                    </div>
+                
+                                    <div>
+                                        &nbsp;  &nbsp;   
+                                    </div>  
+                                {%else%}  
+
+                                    <div  
+                                        
+                                    >   
+                                        <a  
+                                            style="background-color: #ffffff;
+
+                                                border: 2px solid #0971B8;
+                                                color: #0971B8;
+                                                padding: 8px;
+                                                text-align: center;
+                                                text-decoration: none;
+                                                display: inline-block;
+                                                font-size: 16px;
+                                                margin: 1px 2px;
+                                                border-radius: 12px;
+                                                /* padding-left: 2px;
+                                                padding-right: 2px; */
+                                            "
+                                            href="?page=1"
+                                        
+                                        >
+                                            <span style="padding-left: 2px;padding-right: 2px;">1</span>
+                                        </a>
+                                    </div>
+                
+                                    <div>
+                                        &nbsp;  &nbsp;   
+                                    </div> 
+
+                                {%endif%}
+
+
+                                    {% for i in ven.paginator.page_range %}
+                                    
+                                        {% if ven.number == i %}
+                                            {% if i == 1 %} 
+                                            {%else%} 
+                                                {% if i == ven.paginator.num_pages %} 
+                                                {%else%}  
+
+                                                    <div>  
+                                                        <span   style="background-color: #0971B8;
+                                                            border: 2px solid #0971B8;
+                                                            color: white;
+                                                            padding: 8px;
+                                                            text-align: center;
+                                                            text-decoration: none;
+                                                            display: inline-block;
+                                                            font-size: 16px;
+                                                            margin: 1px 2px;
+                                                            border-radius: 12px;">{{ i }}  
+                                                        </span>
+                                                    </div>
+                                
+                                                    <div>
+                                                        &nbsp;  &nbsp;   
+                                                    </div>
+                                                    
+                                                {%endif%}
+                                            {%endif%}
+                                        {% elif i > ven.number|add:'-10' and i < ven.number|add:'10' %}
+                                            {% if i == 1 %} 
+                                            {%else%} 
+                                                {% if i == ven.paginator.num_pages %} 
+                                                {%else%} 
+
+                                                    <div>  
+                                                        <a style="background-color: #ffffff;
+                                                            border: 2px solid #0971B8;
+                                                            color: #0971B8;
+                                                            padding: 8px;
+                                                            text-align: center;
+                                                            text-decoration: none;
+                                                            display: inline-block;
+                                                            font-size: 16px;
+                                                            margin: 1px 2px;
+                                                            border-radius: 12px;" href="?page={{ i }}">{{ i }}
+                                                        </a>
+                                                    </div>
+                                
+                                                    <div>
+                                                        &nbsp;  &nbsp;   
+                                                    </div>
+                                                {%endif%}
+                                            {%endif%}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if ven.number == ven.paginator.num_pages %} 
+
+                                        <div>  
+                                            <a style="background-color: #0971B8;
+                                                border: 2px solid #0971B8;
+                                                color: white;
+                                                padding: 8px;
+                                                text-align: center;
+                                                text-decoration: none;
+                                                display: inline-block;
+                                                font-size: 16px;
+                                                margin: 1px 2px;
+                                                border-radius: 12px;" href="?page={{ven.paginator.num_pages}}">{{ven.paginator.num_pages}}
+                                            </a>
+                                        </div> 
+                                    {%else%}  
+
+                                        <div>  
+                                            <a style="background-color:  #ffffff;
+                                                border: 2px solid #0971B8;
+                                                color: #0971B8;
+                                                padding: 8px;
+                                                text-align: center;
+                                                text-decoration: none;
+                                                display: inline-block;
+                                                font-size: 16px;
+                                                margin: 1px 2px;
+                                                border-radius: 12px;" href="?page={{ven.paginator.num_pages}}">{{ven.paginator.num_pages}}
+                                            </a>
+                                        </div> 
+
+                                    {%endif%}
+
+                                {%endif%} 
+                            </div> 
+                        </div>
+                    </div>
+                </div> 
+
+            {%endif%} 
+
+        </div>
+    </div>  
+</div>
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete"  >Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="CustomModal" tabindex="-1" role="dialog" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customModalLabel">Add Notes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                <div style="display: flex;flex-direction: column;max-width: 640px;min-height: 270px;background: #fff;margin: auto;margin-top: 10px;">
+                    <div style="width: 467px;">
+                        
+                        <textarea     rows="5"    id="bstr" requried></textarea> 
+                        
+                    </div>
+                    
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary"   id = "savenote">Save</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    
+    function AddNote(id)
+    {   
+        $('#CustomModal').modal('show'); 
+
+        $.ajax({
+            url: "fetch_order_notes_modal",
+            type: "POST",
+            
+            data: {
+                "order_id": id
+            },
+            success: function(response) {
+                console.log("Fetched order notes:", response.notes);
+                
+                
+                if (response.notes) {
+                    tinymce.get('bstr').setContent(response.notes); 
+                }
+            }
+        });
+
+        $('#savenote').click(function () {
+
+
+            
+
+            const orderNotes = tinymce.activeEditor.getContent({ format: 'html' });
+            console.log("in function Notes ",orderNotes);
+            
+
+            $.ajax({
+                url: "add_order_notes_modal",
+                type: "POST",
+                data: {"order_id": id, "order_notes": orderNotes },
+
+                success: function(response){
+
+                    console.log("successfully  notes added")
+
+
+                    var drpodwnmjggfj = document.getElementById('alertcontrolid');
+                    var lisitngttjh = document.getElementById('alerting');
+                    lisitngttjh.style.backgroundColor = "#d4edda";
+                    lisitngttjh.style.borderColor = "#d4edda";
+                    if(drpodwnmjggfj.checked == false) {
+                        drpodwnmjggfj.checked = true; 
+                        $('#alerttext').html("Notes added successfully!" );
+                        lisitngttjh.style.display = "block";
+                    }
+                    else{
+                        if(drpodwnmjggfj.checked == true) {
+                            drpodwnmjggfj.checked = true; 
+                            $('#alerttext').html("Notes added successfully!");
+                            lisitngttjh.style.display = "block";
+                        }
+
+                    }
+
+
+                    
+                    
+                    $("#users_table_div").load(window.location.href + " #users_table_div");
+                    tinymce.get('bstr').setContent('');
+                    
+                    
+                    $('#CustomModal').modal('hide');
+                    
+                    
+                }
+            });
+
+        });
+
+
+    }
+
+
+</script>
+
+<script>
+
+    
+
+
+    const filterSearch = document.querySelector('#user_search_input');
+    filterSearch.addEventListener('keyup', function (e) {   
+        if (e.target.value.length == 0){  
+            var main_table = document.getElementById("users_table_div");
+            main_table.style.display="block";   
+
+            var pagiantion_ul_var = document.getElementById("pagination_div");
+            pagiantion_ul_var.style.display="flex"; 
+
+            var search_table = document.getElementById("searched_users_table_div");
+            search_table.style.display="none";  
+        }
+    });
+
+    function SearchFunctionality(){  
+        let search_values = $('#user_search_input').val();      
+        if (search_values == null || search_values == ""){ 
+
+            var main_table = document.getElementById("users_table_div");
+            main_table.style.display="block";   
+
+            var pagiantion_ul_var = document.getElementById("pagination_div");
+            pagiantion_ul_var.style.display="flex"; 
+
+            var search_table = document.getElementById("searched_users_table_div");
+            search_table.style.display="none"; 
+
+
+        }
+        else{
+            
+            var main_table = document.getElementById("users_table_div");
+            main_table.style.display="none";   
+
+            var pagiantion_ul_var = document.getElementById("pagination_div");
+            pagiantion_ul_var.style.display= "none"; 
+
+            var search_table = document.getElementById("searched_users_table_div");
+            search_table.style.display="block"; 
+
+            $.ajax({
+                
+                
+                url: 'order_table_custom_search',
+                type: 'GET',
+                data : {"order": search_values},
+                success : function(response) {
+
+
+                    if (response.success == false){
+
+                        console.log("error this kitchen record not found");
+                        $('#searched_users_table').DataTable().destroy(); 
+                        $('#searched_users_table tbody').empty();
+
+                        $('#searched_users_table').dataTable({ 
+                            "info":false,   
+                            "paging":   false, 
+                            'destroy': true, 
+                            'searching': false,
+                            "lengthChange": false,
+                            language : {
+                                "zeroRecords": " "             
+                            },
+                        });
+
+                    
+                       $('#searched_users_table tbody').html('<tr><td colspan="5" style="text-align:center;">No records found!</td></tr>');
+
+
+                    }
+                    
+                    else{
+
+                        $('#searched_users_table').DataTable().destroy(); 
+                        $('#searched_users_table tbody').empty();
+
+                        $('#searched_users_table').dataTable({ 
+                            "info":false,   
+                            "paging":   false, 
+                            'destroy': true, 
+                            'searching': false,
+                            "lengthChange": false,
+                            language : {
+                                "zeroRecords": " "             
+                            },
+                        });
+
+
+                        $.each(response.response.ven, function(index, item) {
+
+                            console.log(response.response.ven);
+
+                            
+                            
+
+                            const row = document.createElement('tr');
+                            row.id = "searched_row_" + item.id;
+                            var id_for_delete = "searched_row_" + item.id;
+
+
+
+                            const newcolum1Content = document.createElement('td');
+                            newcolum1Content.style = "vertical-align: middle;";
+                            
+                            const newcolum2Content = document.createElement('td');
+                            newcolum2Content.style = "vertical-align: middle;";
+                            const newcolum3Content = document.createElement('td'); 
+                            newcolum3Content.style = "vertical-align: middle;";
+                            const newcolum4Content = document.createElement('td');
+                            newcolum4Content.style = "vertical-align: middle;";
+                            const newcolum6Content = document.createElement('td');
+                            newcolum6Content.style = "vertical-align: middle;";
+
+                            
+                            const newcolum5Content = document.createElement('td');
+                            newcolum5Content.style = "vertical-align: middle;";
+
+                            const newcolum7Content = document.createElement('td');
+                            newcolum7Content.style = "vertical-align: middle;";
+
+    
+
+                            const actions_dropdown = document.createElement('div');
+                            actions_dropdown.className = "dropdown";
+
+                            var actions_main_span = $('<span class="dropdown-toggle" data-toggle="dropdown" style="cursor: pointer;">Actions</span>');
+
+                            const actions_dropdown_menu = document.createElement('div');
+                            actions_dropdown_menu.className = "dropdown-menu";
+
+                            
+
+
+                            const actions_div_row1 = document.createElement('div');
+                            actions_div_row1.style.display = "flex";
+                            actions_div_row1.style.flexDirection = "row";
+                            actions_div_row1.style.justifyContent = "space-evenly";
+                            
+
+                            var detail_action_href =  $('<a class="dropdown-item">View Detail</a>');  
+                            
+                            detail_action_href.appendTo(actions_dropdown_menu);
+                            
+                            actions_main_span.appendTo(actions_dropdown);
+                            actions_dropdown.appendChild(actions_dropdown_menu);
+                            newcolum7Content.appendChild(actions_dropdown);
+
+                            row.appendChild(newcolum1Content);
+                            row.appendChild(newcolum2Content);
+                            row.appendChild(newcolum3Content);
+                            row.appendChild(newcolum4Content);
+                            row.appendChild(newcolum5Content);
+                            row.appendChild(newcolum6Content);
+                            row.appendChild(newcolum7Content);
+                            
+
+
+                            newcolum1Content.innerHTML= item.id; 
+                            newcolum2Content.innerHTML= item.user;
+                            newcolum3Content.innerHTML= item.total_price;
+                            newcolum4Content.innerHTML= item.kitchen_id;
+                            newcolum5Content.innerHTML= item.status;
+                            if(item.is_cod){
+                                newcolum6Content.innerHTML= "Cash on Delivery";
+                            }
+                            else{
+                                newcolum6Content.innerHTML= "Online Payment";
+                            }
+                            
+
+                            
+
+
+                        
+                            var detail_url = "order_detail/" + item.id;   
+
+                            detail_action_href.attr("href",detail_url);
+
+                            
+                            
+                            $('#searched_users_table tbody').append(row);
+                            
+
+
+
+                           
+                               
+                        })
+                    }
+                }
+            });
+            
+
+        }  
+    }
+
+    
+</script>
+<script>
+    function AlertSelfClose()
+    {  
+        var drpodwnmjggfjadty = document.getElementById('alertcontrolid');
+        var lisitngttjhatdy = document.getElementById('alerting');
+        if(drpodwnmjggfjadty.checked == true) {
+            drpodwnmjggfjadty.checked = false; 
+            lisitngttjhatdy.style.display = "none";
+        }
+
+    }
+</script>
+
+<script>
+    $(document).ready(function() {
+        $(document).on('change', 'select[name^="selected_item_cat_dropdown_"]', function() {
+            var selectedRoleId = $(this).val();
+            console.log('Selected status ID:', selectedRoleId);
+
+            var venId = $(this).attr('id').split('_')[1];
+            console.log('Order ID (venId):', venId);
+            
+            $.ajax({
+                url: 'edit_order_status_notif',  
+                type: 'POST',
+                data: {
+                    'status_id': selectedRoleId,
+                    'ven_id': venId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'  
+                },
+                success: function(response) {
+                    console.log(response);
+                    $('#server_message').hide();
+                    $( "#users_table_div" ).load(window.location.href + " #users_table_div"); 
+
+
+                    var drpodwnmjggfj = document.getElementById('alertcontrolid');
+                    var lisitngttjh = document.getElementById('alerting');
+                    lisitngttjh.style.backgroundColor = "#d4edda";
+                    if(drpodwnmjggfj.checked == false) {
+                        drpodwnmjggfj.checked = true; 
+                        $('#alerttext').html('Status updated succesfully!');
+                        lisitngttjh.style.display = "block";
+                    }
+                    else{
+                        if(drpodwnmjggfj.checked == true) {
+                            drpodwnmjggfj.checked = true; 
+                            $('#alerttext').html('Status updated succesfully!');
+                            lisitngttjh.style.display = "block";
+                        }
+
+                    }
+                    
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(response);
+                    $('#server_message').hide();
+                    $( "#users_table_div" ).load(window.location.href + " #users_table_div"); 
+
+
+                    var drpodwnmjggfj = document.getElementById('alertcontrolid');
+                    var lisitngttjh = document.getElementById('alerting');
+                    lisitngttjh.style.backgroundColor = "#d4edda";
+                    if(drpodwnmjggfj.checked == false) {
+                        drpodwnmjggfj.checked = true; 
+                        $('#alerttext').html('Error updating status!');
+                        lisitngttjh.style.display = "block";
+                    }
+                    else{
+                        if(drpodwnmjggfj.checked == true) {
+                            drpodwnmjggfj.checked = true; 
+                            $('#alerttext').html('Error updating status!');
+                            lisitngttjh.style.display = "block";
+                        }
+
+                    }
+                    
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

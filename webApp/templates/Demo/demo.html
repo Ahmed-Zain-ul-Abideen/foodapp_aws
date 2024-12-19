@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE HTML> 
+<html lang="en">
+    <head>
+        <meta charset="utf-8"> 
+        <title>{% block title %}Food Master{% endblock %}</title>
+        {% block css %}{% endblock %}
+    </head>
+
+    <body>
+        <div style="display: flex;width: 100%;flex-direction: column;">
+            {% for menuc in  menus_categories  %}
+                <div style="display: flex;width: 95%;margin-left: 1rem;margin-right: 1rem;padding-bottom: 2rem;">
+                    <div style="display: flex;width: 10%;padding-right: 2rem;border-right: 1px solid chocolate;">{{menuc.title}}</div> 
+                    <div style="display: flex;width: 90%;flex-direction: column;">
+                        {% for menu in  menuc.menu_categories.all  %}
+                        
+                            <div style="display: flex;width: 100%;flex-direction: row;padding-bottom: 1rem;">
+
+                                <div style="display: flex;width: 20%;padding-right: 2rem;padding-left: 1rem;margin-top: 12px;">{{menu.title}}</div> 
+                                <div style="display: flex;width: 80%;flex-flow: row wrap;">
+                                    {% if   menu.menu_divisions.all  %}
+                                        {% for menudivision in  menu.menu_divisions.all  %}
+                                            <div style="display: flex;width: fit-content;flex-direction: column;padding-right: 1rem;border-left: 1px solid chocolate;">
+                                                <div style="display: flex;width: fit-content;flex-direction: row;padding-bottom: 2rem;padding-left: 2rem;">
+                                                    {{menudivision.title}}
+                                                </div>
+                                                <!-- <div style="display: flex;flex-direction: row;width: fit-content;"> -->
+                                            
+                                                {% for menusubdivision in  menudivision.menu_sub_divisions.all  %}
+                                                    <div style="display: flex;width: fit-content;flex-direction: row;">
+                                                        <div style="display: flex;width: fit-content;flex-direction: row;padding-right: 1rem;border-right:  1px solid chocolate;padding-left: 2rem;">{{menusubdivision.title}}</div> 
+                                                        <div style="display: flex;width: fit-content;flex-direction: row;padding-left: 2rem;">
+                                                            {% for menu_item_day in  menusubdivision.menuitem_day.all  %}
+                                                                {% if  menu_item_day.parent_menu.id ==  menu.id  %}
+                                                                    {{menu_item_day.title}}
+                                                                {%else%}
+                                                                {% endif %}
+                                                            {% endfor %} 
+                                                        </div> 
+                                                    </div> 
+                                                {% endfor %}  
+                                                <!-- </div> -->
+                                            </div>
+                                        {% endfor %} 
+                                    {%else%}
+                                        {% for menuitems  in  menu.menu_items.all  %} 
+                                            <div style="display: flex;flex-direction: column;">
+                                                <div style="display: flex;width: fit-content;flex-direction: row;padding-right: 1rem;border-left:  1px solid chocolate;padding-left: 2rem;">{{menuitems.title}}</div> 
+                                                <div style="padding-bottom: 3rem;"></div>
+                                            </div>
+                                        {% endfor %} 
+                                    {% endif %}
+                                </div>
+                  
+                            </div> 
+                            <div style="display: flex;width: 100%;flex-direction: row;">
+                                <div style="width: 2%;"></div>
+                                <div style="width: 98%;border-bottom: 1px solid chocolate;"></div>
+
+                            </div>
+                        {% endfor %} 
+                    </div>  
+                        
+                     
+                </div>
+            {% endfor %} 
+        </div>
+    </body>
+
+</html>
