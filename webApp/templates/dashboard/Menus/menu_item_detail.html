@@ -1,0 +1,241 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Menu Item Detail{% endblock %}
+{% block content %}  
+<div class="container-fluid">
+   {% load static %}
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div
+                style="display: flex;
+                    flex-direction: column;
+                    background: #fff;
+                    margin-top: 0;
+                    margin-bottom: 30px;
+                    padding: 25px 0px 0px 38px;
+                    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
+                    margin-left: -40px;
+                    margin-right: -40px;
+                    /* position: relative; */
+                "
+            > 
+                <div  
+                    style="display: flex;
+                        flex-direction: column; 
+                        margin-bottom: 1rem;
+                        
+                    "
+                    
+                >
+                    <div 
+                        style="align-self: flex-start;
+                            margin-bottom: 0.5rem;
+                    
+                        
+                        "
+                    
+                    >
+                        <h2 
+                            style="
+                                font-size: 20px;
+                                font-weight: 500;
+                                color: #15283c; 
+                            "
+                        >
+                            Menu Item Detail "{{menu_instance.title}}"
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp;  
+                        </h2>  
+                    </div> 
+                    <div style="display: flex;flex-direction: row;justify-content: space-between;margin-top: 1rem;">
+                        <div style="display: flex;flex-direction: row;margin-top: 8px;">
+                            <div class="bread_crumb_hovering">  
+                                <u style="border-bottom: 1px solid #15283c;"> <a href="{% url 'index' %}"> <span>Dashboard</span></a> </u>
+                            </div> 
+                            
+                            
+
+                            <div>
+                                &nbsp; / &nbsp;  
+                            </div>
+                            <div class="bread_crumb_hovering">  
+                                <u style="border-bottom: 1px solid #15283c;"><a href="{% url 'menus_categories_list' %}"> <span>Menu Categories List</span></a> </u>
+                            </div>
+                            
+                            
+                            <div>
+                                &nbsp; / &nbsp;  
+                            </div>
+                            <div class="bread_crumb_hovering">  
+                                <u style="border-bottom: 1px solid #15283c;"> <a href="{% url 'menu_list' category_id %}"> <span>Menu List</span></a> </u>
+                            </div>
+                            
+                            <div>
+                                &nbsp; / &nbsp; <span style="font-size: 11px;">Menu Detail</span> 
+                            </div>
+
+                        </div>
+                        
+                         
+                    </div>
+                    
+                </div>  
+                
+            </div>  
+        </div>
+    </div>
+
+
+
+    <!-- dashboard inner -->
+    <div class="midde_cont">
+    <div class="container-fluid">   
+        <!-- row -->
+        <div class="row column1">
+            <div class="col-md-12">
+                <div class="white_shd full margin_bottom_30">
+
+                <div style = "margin-top: 20px">
+                    {% csrf_token %} 
+                    {% if messages %} 
+                        {% for message in messages %} 
+                            <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible" {% endif %} style="text-align: center;width: 380px;margin-top: 10px;margin: auto;">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {{ message }}
+                            </div> 
+                        {% endfor %} 
+                    {% endif %}
+                
+                </div> 
+
+                <div class="full graph_head">
+                    <div class="heading1 margin_0">
+                        <h2>Items Associated with "{{menu_instance.title}}"</h2>
+                    </div>
+                </div>
+
+                {% if daily_flag %}
+                    <div class="full price_table padding_infor_info">
+                        <div class="row">
+                            
+                            {% for item in all_items %}
+
+
+                                <!-- column contact --> 
+                                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 profile_details margin_bottom_30">
+                                    <div class="contact_blog">
+                                        <div class="contact_inner">
+                                            <div >
+                                                
+                                                
+                                                <p><strong>Item: </strong>{{ item.title }}</p>
+                                                <p><strong>Description: </strong>{{ item.description }}</p>
+                                                
+                              
+                                            </div>                        
+                                            
+                                            
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end column contact blog -->
+                            {% endfor %}
+
+                                            
+                        </div>
+                    </div>
+
+                {% else %}
+
+                    <div class="full price_table padding_infor_info">
+                        <div class="row">
+                            {% load dicts_extras %}
+                            {% for count in total_count %}
+
+
+                                <!-- column contact --> 
+                                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 profile_details margin_bottom_30">
+                                    <div class="contact_blog">
+                                        <div class="contact_inner">
+                                            <div >
+                                                
+                                                <h3>Day {{ forloop.counter }}</h3>
+
+                                                
+                                                {% if menu_items|condition_check:forloop.counter == "None" %}
+                                                
+                                                    <p>No Item Selected Yet!</p>
+                                                {% else %}
+                                                    
+
+                                                    {% if  menu_items|condition_check_items_in_system:forloop.counter %}
+                            
+                                                        <p><strong>Item: </strong>{{ menu_items|get_item:forloop.counter }}</p>
+                                                        <p><strong>Description: </strong>{{ menu_items|get_description:forloop.counter }}</p>
+
+                                                    {% else %}                                                        
+                                                        <p>No Item Selected Yet!</p>
+                                                    {% endif %}
+                                                    
+
+                                                {% endif %}
+                                                
+                                                
+                                                                                
+                                            </div>                        
+                                            <div class="bottom_list">
+                                                
+                                                <div class="right_button">  
+                                                    {% if menu_items|condition_check:forloop.counter == "None" %}
+                                                    
+                                                        <div class="bread_crumb_hovering" >  
+                                                            <button style="background: #0971b8;" class="btn"><a style="color: white;"  href="{% url 'add_associated_item_form' menu_instance.id forloop.counter %}">Add Item</a></button> 
+                                                        </div>
+                                                    {% else %}
+                                                        
+                                                        {% if  menu_items|condition_check_items_in_system:forloop.counter %}
+
+                                                            <div class="bread_crumb_hovering" >  
+                                                                <button style="background: #0971b8;" class="btn"><a style="color: white;"  href="{% url 'edit_associated_item_form' menu_instance.id forloop.counter %}">Edit Item</a></button> 
+                                                            </div>
+                            
+                                                        
+                                                        {% else %}                                                        
+                                                            <div class="bread_crumb_hovering" >  
+                                                                <button style="background: #0971b8;" class="btn"><a style="color: white;"  href="{% url 'add_associated_item_form' menu_instance.id forloop.counter %}">Add Item</a></button> 
+                                                            </div>
+                                                        {% endif %}
+                                                        
+                                                        
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end column contact blog -->
+                            {% endfor %}
+
+                                            
+                        </div>
+                    </div>
+
+                {% endif %}
+                </div>
+            </div>
+            <!-- end row -->
+        </div>
+        
+    </div>
+    <!-- end dashboard inner -->
+
+        
+
+
+
+
+    
+{% endblock %}

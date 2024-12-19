@@ -1,0 +1,182 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Rider Commission{% endblock %}
+{% block content %}  
+<div class="container-fluid">
+   {% load static %}
+    <div class="row column_title">
+        <div class="col-md-12">
+            <div
+                style="display: flex;
+                    flex-direction: column;
+                    background: #fff;
+                    margin-top: 0;
+                    margin-bottom: 30px;
+                    padding: 25px 0px 0px 38px;
+                    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
+                    margin-left: -40px;
+                    margin-right: -40px;
+                    /* position: relative; */
+                "
+            > 
+                <div  
+                    style="display: flex;
+                        flex-direction: column; 
+                        margin-bottom: 1rem;
+                        
+                    "
+                    
+                >
+                    <div 
+                        style="align-self: flex-start;
+                            margin-bottom: 0.5rem;
+                    
+                        
+                        "
+                    
+                    >
+                        <h2 
+                            style="
+                                font-size: 20px;
+                                font-weight: 500;
+                                color: #15283c; 
+                            "
+                        >
+                            Rider Commission
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp;  
+                        </h2>  
+                    </div> 
+                    <div style="display: flex;flex-direction: row;justify-content: space-between;margin-top: 1rem;">
+                        <div style="display: flex;flex-direction: row;margin-top: 8px;">
+                            <div class="bread_crumb_hovering">  
+                                <u style="border-bottom: 1px solid #15283c;"> <a href="{% url 'index' %}"> <span>Dashboard</span></a> </u>
+                            </div> 
+                            
+                            
+
+                            <div>
+                                &nbsp; / &nbsp; <span style="font-size: 11px;">Rider Commission</span> 
+                            </div>
+                            
+
+                        </div>
+                        {%if our_client_section_instance %}
+                        <div class="bread_crumb_hovering" style="margin-right: 40px;" >  
+                            <button style="background: #0971b8;" class="btn"><a style="color: white;"  href="{% url 'add_testimonial_form' add_button_clicked=1 %}">Add Client</a></button> 
+                        </div>
+                        {%else%}
+                        {%endif%}
+                        
+                    </div>
+                    
+                </div>  
+                
+            </div>  
+        </div>
+    </div>
+    <form action="/edit_rider_commision_form" enctype="multipart/form-data" method="POST">
+        {% csrf_token %} 
+        <!-- row -->
+        <div class="row column4 graph"> 
+
+            <div class="col-md-12"> 
+                
+                <div class="white_shd full margin_bottom_30" style="background: #fff;" >  
+                    <div style = "margin-top: 20px">
+                        {% csrf_token %} 
+                        {% if messages %} 
+                            {% for message in messages %} 
+                                <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible" {% endif %} style="text-align: center;width: 380px;margin-top: 10px;margin: auto;">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    {{ message }}
+                                </div> 
+                            {% endfor %} 
+                        {% endif %}
+                    
+                    </div> 
+                    <div   style="display: flex;flex-direction: column;max-width: 640px;min-height: 270px;background: #fff;margin: auto;margin-top: 20px;padding-top: 35px;">
+                        
+
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px; padding-bottom:24px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 6px;">Distance (Meters)</span> 
+                            </div> 
+                            <div style="width: 350px;">
+                                {% if  re_render %}
+                                    <input type="number" name="rider_commision_distance"  min="20" max="100" class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" value="{{rider_commision_distance}}" maxlength="100" />  
+                                {% elif new_record %}
+                                    <input type="number" name="rider_commision_distance" min="20" max="100"  class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" placeholder="Enter Distance (Meters)" maxlength="100" />  
+
+
+                                {% else %}
+                                    <input type="number" value= "{{rider_commision_instance.by_distance}}" min="20" max="100" name="rider_commision_distance"   class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" maxlength="100"/>  
+                                {% endif %} 
+
+                            </div> 
+                        </div>
+
+
+                        <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px; padding-bottom:24px;">
+                            <div style="width: 200px;">
+                                <span style="margin-top: 6px;">Commission Amount (PKR)</span> 
+                            </div> 
+                            <div style="width: 350px;">
+                                {% if  re_render %}
+                                    <input type="number" name="rider_commision_amount"  class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" value="{{rider_commision_amount}}"  />  
+                                {% elif new_record %}
+                                    <input type="number" name="rider_commision_amount"  class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" placeholder="Enter Amount(PKR)" />  
+
+
+                                {% else %}
+                                    <input type="number" value= "{{rider_commision_instance.amount_share}}" name="rider_commision_amount"   class="styled_input_box_edit_username" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;width: 350px;" />  
+                                {% endif %} 
+
+                            </div> 
+                        </div>
+
+                    
+                        <div   style="display: flex;flex-direction: column;max-width: 640px;background: #fff;margin: auto;margin-top: 20px;padding-top: 35px;">
+                            <div style="display: flex;flex-direction: row;justify-content: space-between;width: 550px;">
+                                <div style="width: 200px;">
+                                    <span style="margin-top: 16px;display: none;">Enter Question</span> 
+                                </div> 
+                                <div style="width: 350px;">
+                                    <button type="submit" style="background: #0971b8;padding-left: 16px;padding-right: 16px;color: white;" class="btn">Save</button>
+                                </div> 
+                            </div>   
+                        </div>
+                        <!-- <div   style="max-width: 500px;background: #fff;margin: auto;padding-bottom: 1rem;">
+                            <button type="submit" class="add_theme_main_bt" style="float: right;margin-right: 60px;" >Save</button>  
+                        </div> -->
+                        <div   style="max-width: 640px;background: #fff;margin: auto;margin-top: 60px;padding-bottom: 1rem;"> 
+                        </div> 
+
+                        
+                        
+
+                    </div> 
+
+                    
+                </div>
+
+
+                
+            </div> 
+            
+        </div>   
+
+
+
+    </form>
+
+
+</div> 
+
+
+
+
+
+{% endblock %}

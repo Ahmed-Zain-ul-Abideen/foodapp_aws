@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Address Auto-Complete</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&libraries=places" async defer></script>
+    <script>
+        function initAutocomplete() {
+            var input = document.getElementById('address');
+            var autocomplete = new google.maps.places.Autocomplete(input, {
+                types: ['geocode']
+            });
+
+            autocomplete.addListener('place_changed', function() {
+                var place = autocomplete.getPlace();
+
+                if (!place.geometry) {
+                    console.log("No details available for input: '" + place.name + "'");
+                    return;
+                }
+
+                
+                var addressComponents = place.address_components;
+                var addressLine1 = '';
+                var addressLine2 = '';
+                var city = '';
+                var state = '';
+                var zip = '';
+                var country = '';
+                var latitude = place.geometry.location.lat();
+                var longitude = place.geometry.location.lng();
+
+                for (var i = 0; i < addressComponents.length; i++) {
+                    var component = addressComponents[i];
+                    var componentType = component.types[0];
+
+                    if (componentType === 'street_number') {
+                        addressLine1 += component.long_name + ' ';
+                    } else if (componentType === 'route') {
+                        addressLine1 += component.long_name;
+                    } else if (componentType === 'sublocality_level_1' || componentType === 'locality') {
+                        addressLine2 = component.long_name;
+                    } else if (componentType === 'administrative_area_level_2') {
+                        city = component.long_name;
+                    } else if (componentType === 'administrative_area_level_1') {
+                        state = component.short_name;
+                    } else if (componentType === 'postal_code') {
+                        zip = component.long_name;
+                    } else if (componentType === 'country') {
+                        country = component.long_name;
+                    }
+                }
+
+                document.getElementById('address_line1').value = addressLine1;
+                document.getElementById('address_line2').value = addressLine2;
+                document.getElementById('city').value = city;
+                document.getElementById('state').value = state;
+                document.getElementById('zip').value = zip;
+                document.getElementById('country').value = country;
+                document.getElementById('latitude').value = latitude;
+                document.getElementById('longitude').value = longitude;
+                document.getElementById('atfilsbmt').style.display = "block";
+            });
+        }
+    </script>
+</head>
+<body onload="initAutocomplete()">
+    <h1>Enter your address</h1>
+    <input id="address" type="text" placeholder="Start typing your address">
+
+    <form method="post" action="{% url 'save_address' %}">
+        {% csrf_token %}
+        <input id="address_line1" name="address_line1" type="text" placeholder="Address Line 1" required>
+        <input id="address_line2" name="address_line2" type="text" placeholder="Address Line 2">
+        <input id="city" name="city" type="text" placeholder="City" required>
+        <input id="state" name="state" type="text" placeholder="State" required>
+        <input id="zip" name="zip" type="text" placeholder="ZIP Code" required>
+        <input id="country" name="country" type="text" placeholder="Country" required>
+        <input id="latitude" name="latitude" type="hidden">
+        <input id="longitude" name="longitude" type="hidden">
+        <button id="atfilsbmt" style="display: none;" type="submit">Submit</button>
+    </form>
+</body>
+</html>

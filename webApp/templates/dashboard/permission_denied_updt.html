@@ -1,0 +1,40 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Permission Denied{% endblock %}
+{% block content %}  
+<div class="container-fluid"  >
+    {% load static %}  
+    <div class="full_container">
+        <div class="container">
+            
+            <div class="center verticle_center full_height">
+                <div class="login_section">
+                <div class="logo_login" style="background-image: url('{{ STATIC_URL }}assets/src/images/layout_img/login_image.jpg');">
+                    <div class="center">
+                        <img width="210" src="{% static 'assets/src/images/logo/logo-2.png' %}" alt="#" />
+                    </div>
+                </div> 
+                <div style = "margin-top :20px">
+                    
+                    <div class="alert alert-warning alert-dismissible" style="text-align: center;width: 380px;margin-top: 30px;margin: auto;">
+                        {% comment %} <button type="button"  data-dismiss="alert">&times;</button> {% endcomment %}
+                        <span id="alerttext">Permission Denied! You don't have permission to access this page</span> 
+                    </div>
+                    
+                </div>
+                        
+                <div style="display: flex;flex-direction: column;margin: auto;width: 60%;margin-top: 70px;"> 
+                    <!-- <div class="field">  -->
+                    
+                    <!-- <div class="field"> -->
+                    
+                    
+                    
+                </div>   
+                </div>
+            </div>
+        </div>
+    </div> 
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,814 @@
+{% load webApp_extras %}
+{% load dicts_extras %}
+{% get_role_modules as role_modules %} 
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title> {% block title %}FoodApp Admin Panel {% endblock %}</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      {% load static %}
+      <link rel="icon" type="image/x-icon" href="{% static 'assets/src/images/logo/logo_alpha_beta.ico' %}">
+      <!-- site icon -->
+      <!-- <link rel="icon" href="images/fevicon.png" type="image/png" /> -->
+      <!-- bootstrap css -->
+      <link rel="stylesheet" type="text/css" href="{% static 'assets/src/css/bootstrap.min.css' %}" />
+      <!-- site css -->
+      <link rel="stylesheet" type="text/css" href= "{% static 'assets/src/css/style.css' %}" />
+      <!-- responsive css -->
+      <link rel="stylesheet" type="text/css" href= "{% static 'assets/src/css/responsive.css' %}" /> 
+      <!-- color css -->
+      
+      <!-- select bootstrap -->
+      <link rel="stylesheet" type="text/css" href=  "{% static 'assets/src/css/bootstrap-select.css' %}" />
+      <!-- scrollbar css -->
+      <link rel="stylesheet" type="text/css" href= "{% static 'assets/src/css/perfect-scrollbar.css' %}" />
+      <!-- custom css -->
+      <link rel="stylesheet" type="text/css" href= "{% static 'assets/src/css/custom.css' %}" />
+
+      {% comment %} dropdown CSS {% endcomment %}
+      <link rel="stylesheet" type="text/css" href= "{% static 'assets/src/css/example-styles.css' %}" />
+
+
+      <!-- Texteditor js  -->
+      <script src="{% static 'assets/src/js/tinymce/js/tinymce/tinymce.min.js' %}"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+      <script>
+         tinymce.init({forced_root_block : '',selector:'textarea'});
+      </script>
+      
+      <style>
+         
+         .tox-promotion{
+             display : none;
+         }
+     
+         .tox-statusbar__branding{
+             display: none;
+         }
+
+     </style>
+      <!--[if lt IE 9]> 
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+   </head>
+   <body class="dashboard dashboard_1">
+      {% load static %}
+      {% get_role_modules as role_modules %}
+
+      
+      
+         <div class="full_container">
+            <div class="inner_container">
+
+               {% if request.user.is_superuser%}
+                  <nav id="sidebar" style="background-color: #fff;">
+                     <div class="sidebar_blog_1">
+                        <div class="sidebar-header">
+                           <!--<div class="logo_section">
+                              <a href="{% url 'index' %}"><img class="logo_icon img-responsive" src="{% static 'assets/src/images/log.png' %}" alt="#" /></a>
+                           </div>-->
+                        </div>
+
+                        <div class="sidebar_user_info" style="background: #fff;">
+                           <div class="icon_setting"></div>
+                           <div class="user_profle_side">
+                              <div class="user_img"><img class="img-responsive" src="{% static 'assets/src/images/logo/logo_beta.png' %}" alt="#" style="width: 70px; height: 70px;" /></div>
+
+
+                              <div class="user_info">
+                                 <h6 style="color: #222;">
+                                    {% if request.user.is_authenticated %}
+                                       {{ request.user.get_username }} 
+                                       
+                                       
+                                    {% else %} 
+                                       Jordan
+                                    {% endif %}
+                                 </h6>
+                                 {% if request.user.is_authenticated %}
+                                    <p><span class="online_animation"></span> Online</p>
+                                 {% else %} 
+                                    <p style="color: red;"><span class="offline_custom_animation"></span> Offline</p>
+                                 {% endif %}
+                                 
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="sidebar_blog_2">
+                        {% if request.user.is_superuser%}
+                           <h4 style="background: #f3f3f3;color: #222;border-bottom: none;">SuperAdmin Panel</h4>
+                        {% else %}
+                           
+                        {% endif %}
+
+                        
+
+                  
+                        <ul class="list-unstyled components">
+                           
+
+                           <li> 
+                              <a href="#quotes_titles" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-th-large blue1_color"></i> <span> Modules</span></a> 
+                              <ul class="collapse list-unstyled" id="quotes_titles"> 
+
+                                 <li><a href="{% url 'systemmodules' %}" > <span>Modules List</span></a></li>
+                                 <li><a href="{% url 'add_systemmodule_form' add_button_clicked=1 %}"> <span>Add Module</span></a></li>
+                                 
+                                 
+                              
+                              </ul> 
+                           </li>
+
+                           <li> 
+                              <a href="#order_status" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-clone blue1_color"></i> <span> Order Status</span></a> 
+                              <ul class="collapse list-unstyled" id="order_status"> 
+
+                                 <li><a href="{% url 'order_status' %}" > <span>Order Status List</span></a></li>
+                                 {% comment %} <li><a href="{% url 'add_order_status_form' add_button_clicked=1 %}"> <span>Add Order Status</span></a></li> {% endcomment %}
+                                 
+                                 
+                                 
+                              </ul> 
+                           </li>
+                           <li> 
+                              <a href="#admin_setting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-briefcase red_color"></i> <span> Web Content</span></a> 
+                              <ul class="collapse list-unstyled" id="admin_setting"> 
+
+                                 <li><a href="{% url 'web_dynamic_content_form' %}" > <span>Web Dynamic Content</span></a></li>
+                                 <li><a href="{% url 'service_title_form' %}" > <span>Service Section </span></a></li>
+                                 <li><a href="{% url 'service_list' %}" > <span> Services List </span></a></li>
+                                 <li><a href="{% url 'client_section_form' %}" > <span>Client Section </span></a></li>
+                                 <li><a href="{% url 'testimonial_list' %}" > <span> Testimonials List </span></a></li>
+  
+                              </ul> 
+                           </li>
+               
+                           <li class="active">
+                              <a href="#apps" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-users blue2_color"></i> <span>Users</span></a>
+                              <ul class="collapse list-unstyled" id="apps"> 
+                                 <li><a href="{% url 'users' %}"> <span>Users List</span></a></li>
+                                 <li><a href="{% url 'add_user_form' add_button_clicked=1 %}"> <span>Add User</span></a></li>
+                                 <!-- <li><a href="#"> <span>Order Topics</span></a></li>-->
+                              </ul>
+                           </li>
+                           
+                           
+                            
+                           <li>
+                              <a href="#element" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-paper-plane yellow_color"></i> <span>Roles</span></a>
+                              <ul class="collapse list-unstyled" id="element">
+                                 <li><a href="{% url 'groups' %}"> <span>Roles List</span></a></li>
+                                 <li><a href="{% url 'add_group_form' add_button_clicked=1 %}"> <span>Add Role</span></a></li>
+                                 <li><a href="{% url 'edit_user_role'  %}"> <span>User Role</span></a></li>
+                              
+                              </ul>
+                           </li> 
+                           
+                           
+                           <li >
+                              <a href="#dashboard" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-cutlery red_color"></i> <span>Kitchens</span></a>
+                              <ul class="collapse list-unstyled" id="dashboard">
+                                 <li>
+                                    <a href="{% url 'kitchens' %}"> <span>Kitchens List</span></a>
+                                    <a href="{% url 'add_kitchen_form' add_button_clicked=1 %}"> <span>Add Kitchens</span></a>
+                                 </li>
+                                 
+                              </ul>
+                           </li>
+                           
+                           <!--<li> 
+                              <a href="#meditations_ul" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-c blue1_color"></i> <span>My Kitchen</span></a> 
+                              <ul class="collapse list-unstyled" id="meditations_ul"> 
+                                 <li><a href="#"> <span>Order List</span></a></li>
+                                 <li><a href="{% url 'select_kitchen_specialities'  %}"> <span>Select Items</span></a></li> 
+                              </ul>
+                           </li>-->
+                           
+
+                           <li> 
+                              <a href="#narrator" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-clone yellow_color"></i> <span>Menus</span></a> 
+                              <ul class="collapse list-unstyled" id="narrator"> 
+
+                                 <li><a href="{% url 'menus_categories_list' %}"> <span>Menu Categories List</span></a></li>
+                                 
+                                 
+                                 
+                              </ul> 
+                           </li>
+                           
+                           <li> 
+                              <a href="#background_cards" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-beer red_color"></i> <span>Items</span></a> 
+                              <ul class="collapse list-unstyled" id="background_cards"> 
+
+                                 <li><a href="{% url 'item_list' %}" > <span>Items List</span></a></li>
+                                 <li><a href="{% url 'add_item_form' add_button_clicked=1 %}"> <span>Add Item </span></a></li>
+                                 
+                                 
+                              </ul> 
+                           </li>
+                           <li> 
+                              <a href="#offer_deals" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-delicious purple_color"></i> <span>Offers / Deals</span></a> 
+                              <ul class="collapse list-unstyled" id="offer_deals"> 
+
+                                 <li><a href="{% url 'offers' %}" > <span>Offers List</span></a></li>
+                                 <li><a href="{% url 'add_offer_form' add_button_clicked=1 %}"> <span>Add Offer </span></a></li>
+                                 
+                                 
+                              </ul> 
+                           </li>
+                           <li> 
+                              <a href="#add_ons" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-cube orange_color"></i> <span>Add Ons</span></a> 
+                              <ul class="collapse list-unstyled" id="add_ons"> 
+
+                                 <li><a href="{% url 'addons' %}" > <span>Add Ons List</span></a></li>
+                                 <li><a href="{% url 'add_addons_form' add_button_clicked=1 %}"> <span>Add AddOn </span></a></li>
+                                 
+                                 
+                              </ul> 
+                           </li>
+                           <li> 
+                              <a href="#payments_records" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-bar-chart-o green_color"></i> <span> Orders</span></a> 
+                              <ul class="collapse list-unstyled" id="payments_records"> 
+
+                                 <li><a href="{% url 'orders' %}" > <span>Orders List</span></a></li>
+                                 
+                                 
+                                 
+                              </ul> 
+                           </li>
+                           <li> 
+                              <a href="#rider_setting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-motorcycle orange_color"></i> <span> Rider Setting</span></a> 
+                              <ul class="collapse list-unstyled" id="rider_setting"> 
+
+                                 <li><a href="{% url 'rider_commision_form' %}" > <span>Rider Commision</span></a></li>
+                                 
+                                 
+                                 
+                              </ul> 
+                           </li>
+                           <li> 
+                              <a href="#reminder_titles" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-align-center red_color"></i> <span> Payment Accounts </span></a> 
+                              <ul class="collapse list-unstyled" id="reminder_titles"> 
+
+                                 <li><a href="{% url 'payment_accounts' %}" > <span>My Payment Accounts List</span></a></li>
+                                 <li><a href="{% url 'all_payment_account_list' %}" > <span>All Payment Accounts List</span></a></li>
+                                 <li><a href="{% url 'add_payment_account_form' add_button_clicked=1 %}"> <span>Add Payment Account </span></a></li>
+                                 <li><a href="{% url 'kitchen_payment_share' %}"> <span>Kitchen Payment Share </span></a></li>
+                                 
+                                 
+                                 
+                              </ul> 
+                           </li>
+                           
+                           <!--<li> 
+                              <a href="#admin_setting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-cog red_color"></i> <span> Settings</span></a> 
+                              <ul class="collapse list-unstyled" id="admin_setting"> 
+
+                                 <li><a href="#" > <span>Admin Settings</span></a></li>
+                                 
+                                 
+                                 
+                              </ul> 
+                           </li>
+                           <li>
+                              <a href="{% url 'index' %}">
+                              <i class="fa fa-paper-plane red_color"></i> <span>Contact</span></a>
+                           </li>
+                           <li class="active">
+                              <a href="#additional_page" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-clone yellow_color"></i> <span>Additional Pages</span></a>
+                              <ul class="collapse list-unstyled" id="additional_page">
+                                 <li>
+                                    <a href="{% url 'index' %}"> <span>Profile</span></a>
+                                 </li>
+                                 <li>
+                                    <a href="{% url 'index' %}"> <span>Projects</span></a>
+                                 </li>
+                                 <li>
+                                    <a href="{% url 'index' %}"> <span>Login</span></a>
+                                 </li>
+                                 <li>
+                                    <a href="{% url 'index' %}"> <span>404 Error</span></a>
+                                 </li>
+                              </ul>
+                           </li>
+                           <li><a href="{% url 'index' %}"><i class="fa fa-map purple_color2"></i> <span>Map</span></a></li>
+                           <li><a href="{% url 'index' %}"><i class="fa fa-bar-chart-o green_color"></i> <span>Charts</span></a></li>
+                           <li><a href="{% url 'index' %}"><i class="fa fa-cog yellow_color"></i> <span>Settings</span></a></li> -->
+                        </ul>
+                     </div>
+                  </nav>
+               {% else %}
+               <!-- Sidebar  -->               
+               <nav id="sidebar" style="background-color: #fff;">
+                  <div class="sidebar_blog_1">
+                     <div class="sidebar-header">
+                        <!--<div class="logo_section">
+                           <a href="{% url 'index' %}"><img class="logo_icon img-responsive" src="{% static 'assets/src/images/log.png' %}" alt="#" /></a>
+                        </div>-->
+                     </div>
+
+                     <div class="sidebar_user_info" style="background: #fff;">
+                        <div class="icon_setting"></div>
+                        <div class="user_profle_side">
+                           <div class="user_img"><img class="img-responsive" src="{% static 'assets/src/images/logo/logo_beta.png' %}" alt="#" style="width: 70px; height: 70px;" /></div>
+
+
+                           <div class="user_info">
+                              <h6 style="color: #222;">
+                                 {% if request.user.is_authenticated %}
+                                    {{ request.user.get_username }} 
+                                    
+                                    
+                                 {% else %} 
+                                    Jordan
+                                 {% endif %}
+                              </h6>
+                              {% if request.user.is_authenticated %}
+                                 <p><span class="online_animation"></span> Online</p>
+                              {% else %} 
+                                 <p style="color: red;"><span class="offline_custom_animation"></span> Offline</p>
+                              {% endif %}
+                              
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="sidebar_blog_2">
+                     
+
+                        
+
+                        {% if request.user.id|approved_owner_check %}
+                           <h4 style="background: #f3f3f3;color: #222;border-bottom: none;">Kitchen Panel</h4>
+                        {% else %}
+                           <h4 style="background: #f3f3f3;color: #222;border-bottom: none;">{{role_modules.1}} Panel</h4>
+
+                        {% endif %}
+                     <ul class="list-unstyled components">
+                        {% if 'Users' in role_modules %}
+            
+                           <li class="active">
+                              <a href="#apps" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-users blue2_color"></i> <span>Users</span></a>
+                              <ul class="collapse list-unstyled" id="apps"> 
+                                 <li><a href="{% url 'users' %}"> <span>Users List</span></a></li>
+                                 <li><a href="{% url 'add_user_form' add_button_clicked=1 %}"> <span>Add User</span></a></li>
+                                 <!-- <li><a href="#"> <span>Order Topics</span></a></li>-->
+                              </ul>
+                           </li>
+                        {% else %}
+                        {% endif %}
+                        
+                        {% if 'Roles' in role_modules %} 
+                        <li>
+                           <a href="#element" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-paper-plane yellow_color"></i> <span>Roles</span></a>
+                           <ul class="collapse list-unstyled" id="element">
+                              <li><a href="{% url 'groups' %}"> <span>Roles List</span></a></li>
+                              <li><a href="{% url 'add_group_form' add_button_clicked=1 %}"> <span>Add Role</span></a></li>
+                              <li><a href="{% url 'edit_user_role'  %}"> <span>User Role</span></a></li>
+                           
+                           </ul>
+                        </li> 
+                        {% else %}
+                        {% endif %}
+
+                        {% if 'Kitchens' in role_modules %}
+                           <li >
+                              <a href="#dashboard" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-cutlery red_color"></i> <span>Kitchens</span></a>
+                              <ul class="collapse list-unstyled" id="dashboard">
+                                 <li>
+                                    <a href="{% url 'kitchens' %}"> <span>Kitchens List</span></a>
+                                    <a href="{% url 'add_kitchen_form' add_button_clicked=1 %}"> <span>Add Kitchens</span></a>
+                                 </li>
+                                 
+                              </ul>
+                           </li>
+                        {% else %}
+                        {% endif %}
+
+                        {% if request.user.id is None %}
+
+                        {%else%}
+
+                           {% if request.user.id|approved_owner_check %}
+
+                           
+                              <li> 
+                                 <a href="#meditations_ul" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-briefcase blue1_color"></i> <span>My Kitchen</span></a> 
+                                 <ul class="collapse list-unstyled" id="meditations_ul"> 
+                                    <li><a href="{% url 'my_kitchen_orders'  %}"> <span>Order List</span></a></li> 
+                                    <li><a href="{% url 'my_kitchen_previous_orders' request.user.id  %}"> <span>Previous Order List</span></a></li>
+                                    <!--<li><a href="{% url 'select_kitchen_specialities'  %}"> <span>Select Items</span></a></li>--> 
+                                 </ul>
+                              </li>
+                           {% else %}
+                           {% endif %}
+                        {% endif %}
+
+
+                        {% if 'Menus' in role_modules %}
+
+                        <li> 
+                           <a href="#narrator" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-clone yellow_color"></i> <span>Menus</span></a> 
+                           <ul class="collapse list-unstyled" id="narrator"> 
+
+                              <li><a href="{% url 'menus_categories_list' %}"> <span>Menu Categories List</span></a></li>
+                              
+                              
+                              
+                           </ul> 
+                        </li>
+                        {% else %}
+                        {% endif %}
+
+                        {% if 'Menus' in role_modules %}
+                        <li> 
+                           <a href="#background_cards" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-beer red_color"></i> <span>Items</span></a> 
+                           <ul class="collapse list-unstyled" id="background_cards"> 
+
+                              <li><a href="{% url 'item_list' %}" > <span>Items List</span></a></li>
+                              <li><a href="{% url 'add_item_form' add_button_clicked=1 %}"> <span>Add Item </span></a></li>
+                              
+                              
+                           </ul> 
+                        </li>
+                        {% else %}
+                        {% endif %}
+
+                        {% if 'Orders' in role_modules %}
+                           <li> 
+                              <a href="#payments_records" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-bar-chart-o green_color"></i> <span> Orders</span></a> 
+                              <ul class="collapse list-unstyled" id="payments_records"> 
+
+                                 
+                                 {% if 'Call Agent' in role_modules or 'Rider' in role_modules%}
+                                    <li><a href="{% url 'orders' %}" > <span>New Orders List</span></a></li>
+                                    <li><a href="{% url 'previous_orders' %}" > <span>Previous Orders List</span></a></li>
+                                 {% else %}
+                                    <li><a href="{% url 'orders' %}" > <span>Orders List</span></a></li>
+                                 {% endif %}
+                                
+                                 
+                                 
+                                 
+                              </ul> 
+                           </li>
+                        {% else %}
+                        {% endif %}
+                        {% if 'Orders' in role_modules %}
+                           <li> 
+                              <a href="#pending_rider_records" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-indent yellow_color"></i> <span> Pending Orders</span></a> 
+                              <ul class="collapse list-unstyled" id="pending_rider_records"> 
+
+                                 <li><a href="{% url 'rider_pending_orders' %}" > <span>Pending Rider Orders</span></a></li>
+
+                              </ul> 
+                           </li>
+                        {% else %}
+                        {% endif %}
+                        {% if 'PaymentAccounts' in role_modules %}
+                           <li> 
+                              <a href="#reminder_titles" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-align-center red_color"></i> <span> Payment Accounts </span></a> 
+                              <ul class="collapse list-unstyled" id="reminder_titles"> 
+                                 {% if 'Accountant' in role_modules  %}
+                                 
+                                 {% else %}
+                                    <li><a href="{% url 'payment_accounts' %}" > <span>My Payment Accounts List</span></a></li>
+                                    <li><a href="{% url 'add_payment_account_form' add_button_clicked=1 %}"> <span>Add Payment Account </span></a></li>
+                                 {% endif %}
+
+                                 {% if 'Admin' in role_modules or 'Accountant' in role_modules  %}
+                                    <li><a href="{% url 'all_payment_account_list' %}" > <span>All Payment Accounts List</span></a></li>
+                                    <li><a href="{% url 'kitchen_payment_share' %}"> <span>Kitchen Payment Share </span></a></li>
+                                 {% else %}
+                                 {% endif %} 
+                                 
+
+                                 
+                                 
+                                 
+                              </ul> 
+                           </li>
+                        {% else %}
+                        {% endif %}
+                       <!--<li> 
+                           <a href="#reminder_titles" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-align-center red_color"></i> <span> Daily Reminders Title</span></a> 
+                           <ul class="collapse list-unstyled" id="reminder_titles"> 
+
+                              <li><a href="#" > <span>Reminders Title List</span></a></li>
+                              <li><a href="#"> <span>Add Reminder Title </span></a></li>
+                              
+                              
+                              
+                           </ul> 
+                        </li>
+                        <li> 
+                           <a href="#quotes_titles" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-th-large blue1_color"></i> <span> Daily Quotes Title</span></a> 
+                           <ul class="collapse list-unstyled" id="quotes_titles"> 
+
+                              <li><a href="#" > <span>Quotes Title List</span></a></li>
+                              <li><a href="#"> <span>Add Quote Title</span></a></li>
+                              
+                              
+                              
+                           </ul> 
+                        </li>
+                        <li> 
+                           <a href="#admin_setting" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="color: #222;"><i class="fa fa-cog red_color"></i> <span> Settings</span></a> 
+                           <ul class="collapse list-unstyled" id="admin_setting"> 
+
+                              <li><a href="#" > <span>Admin Settings</span></a></li>
+                              
+                              
+                              
+                           </ul> 
+                        </li>
+                        <li>
+                           <a href="{% url 'index' %}">
+                           <i class="fa fa-paper-plane red_color"></i> <span>Contact</span></a>
+                        </li>
+                        <li class="active">
+                           <a href="#additional_page" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-clone yellow_color"></i> <span>Additional Pages</span></a>
+                           <ul class="collapse list-unstyled" id="additional_page">
+                              <li>
+                                 <a href="{% url 'index' %}"> <span>Profile</span></a>
+                              </li>
+                              <li>
+                                 <a href="{% url 'index' %}"> <span>Projects</span></a>
+                              </li>
+                              <li>
+                                 <a href="{% url 'index' %}"> <span>Login</span></a>
+                              </li>
+                              <li>
+                                 <a href="{% url 'index' %}"> <span>404 Error</span></a>
+                              </li>
+                           </ul>
+                        </li>
+                        <li><a href="{% url 'index' %}"><i class="fa fa-map purple_color2"></i> <span>Map</span></a></li>
+                        <li><a href="{% url 'index' %}"><i class="fa fa-bar-chart-o green_color"></i> <span>Charts</span></a></li>
+                        <li><a href="{% url 'index' %}"><i class="fa fa-cog yellow_color"></i> <span>Settings</span></a></li> -->
+                     </ul>
+                  </div>
+               </nav>
+               {% endif %}
+               <!-- end sidebar -->
+               <!-- right content -->
+               <div id="content">
+                  <!-- topbar -->
+                  <div class="topbar">
+                     <nav class="navbar navbar-expand-lg navbar-light" style="background: #fff;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);">
+                        <div class="full"> 
+                           <div class="logo_section">
+                              <!-- style="margin: 0 0 0 25px;" -->
+                              <ul class="user_profile_dd" >
+                                 <li style="background: #0971b8;padding-bottom: 10px;">
+                                    <a href="{% url 'index' %}"><img class="img-responsive" src="{% static 'assets/src/images/logo/logo-2.png' %}" alt="#" /></a>
+                                 </li>
+                              </ul> 
+                           </div> 
+                           <div class="right_topbar">
+                              <div class="icon_info">
+                                 <ul>
+                                    <!-- <li><a href="#"><i class="fa fa-bell-o"></i><span class="badge" style="background: #0971b8;">2</span></a></li>
+                                    <li><a href="#"><i class="fa fa-question-circle"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-envelope-o"></i><span class="badge">3</span></a></li> -->
+                                 </ul>
+                                 <ul class="user_profile_dd">
+                                    <li style="background: #0971b8;">
+                                       <a class="dropdown-toggle" data-toggle="dropdown"><img class="img-responsive rounded-circle" src="{% static 'assets/src/images/logo/logo_beta.png' %}" alt="#" style="width: 30px; height: 30px;" /><span class="name_user">
+                                          <span>
+                                             {% if request.user.is_authenticated %}
+                                                {{ request.user.get_username }} 
+                                             {% else %} 
+                                             {% comment %} <a style = "margin-left:20px;" href="{% url 'login-dashboard' %}">Login</a> {% endcomment %}
+                                             {% endif %}
+                                          </span>
+                                       </a>
+                                       <div class="dropdown-menu">
+                                          <!-- <a class="dropdown-item" href="{% url 'index' %}">My Profile</a>
+                                          <a class="dropdown-item" href="{% url 'index' %}">Settings</a>
+                                          <a class="dropdown-item" href="{% url 'index' %}">Help</a> -->
+                                          {% if request.user.is_authenticated %}
+                                             <!--<a class="dropdown-item" href="#"><span>Admin Profile</span> <i class="fa fa-user-o"></i></a>-->
+
+                                             <a class="dropdown-item" href="{% url 'user_logout' %}"><span>Log Out</span> <i class="fa fa-sign-out"></i></a>
+                                          {% else %} 
+                                             <a class="dropdown-item"  href="{% url 'login-dashboard' %}"><span>Log in</span> <i class="fa fa-sign-out"></i></a>
+                                          {% endif %}
+
+
+                                          {% if request.user.is_authenticated %}
+                                             {% if 'Admin' in role_modules %}
+                                                {% if request.user.admin_adrress_record %} 
+                                                   <a class="dropdown-item" href="{% url 'save_admin_address' add=True %}"><span>update address</span> <i class="fa fa-paper-plane"></i></a>
+                                                {% else %}  
+                                                   <a class="dropdown-item" href="{% url 'save_admin_address' add=None  %}"><span>add address</span> <i class="fa fa-paper-plane"></i></a>
+                                                {% endif %} 
+                                             {% else %}  
+                                             {% endif %}
+                                          {% else %}  
+                                          {% endif %}
+                                          {% if request.user.is_superuser %}
+                                             <a class="dropdown-item" href="{% url 'foodapp_setting' %}"><span>FoodApp Setting</span> <i class="fa fa-cog"></i></a>
+                                          {% else %}  
+                                          {% endif %}
+
+                                          
+                                       </div>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                     </nav>
+                  </div>
+                  <!-- end topbar -->
+                  <!-- dashboard inner -->
+                  <div class="midde_cont">
+
+                     {% block content %}{% endblock %}
+
+                     <!-- footer -->
+                     <div class="container-fluid">
+                        <div class="footer">
+                           <p>Copyright © {% now 'Y' %} <br><br>
+                           </p>
+                        </div>
+                     </div>
+
+                  </div>
+
+                  
+                  
+                  <!-- end dashboard inner -->
+               </div>
+            </div>
+         </div>
+      
+      <!-- jQuery --> 
+      <script src="{% static 'assets/src/js/code.jquery.com_jquery.3.1.1.min.js' %}"></script>
+      <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+      <!-- <script src="{% static 'assets/src/js/jquery.min.js' %}"></script> --> 
+      <script src="{% static 'assets/src/js/popper.min.js' %}"></script>
+      <script src="{% static 'assets/src/js/bootstrap.min.js' %}"></script>
+      <!-- wow animation -->
+      <script src="{% static 'assets/src/js/animate.js' %}"></script>
+      <!-- select country -->
+      
+      <!-- <script src="{% static 'assets/src/js/bootstrap-select.js' %}"></script> -->
+      <!-- owl carousel -->
+      <script src="{% static 'assets/src/js/owl.carousel.js' %}"></script> 
+      <!-- chart js -->
+      <script src="{% static 'assets/src/js/Chart.min.js' %}"></script>
+      <script src="{% static 'assets/src/js/Chart.bundle.min.js' %}"></script>
+      <script src="{% static 'assets/src/js/utils.js' %}"></script>
+      <script src="{% static 'assets/src/js/analyser.js' %}"></script>
+      <!-- nice scrollbar -->
+      <script src="{% static 'assets/src/js/perfect-scrollbar.min.js' %}"></script>
+      <script>
+         var ps = new PerfectScrollbar('#sidebar');
+      </script>
+      <!-- custom js -->
+      <script src="{% static 'assets/src/js/custom.js' %}"></script>
+      <script src="{% static 'assets/src/js/chart_custom_style1.js' %}"></script>
+      {% comment %} dropdown Js {% endcomment %}
+
+      <script src="{% static 'assets/src/js/jquery.multi-select.js' %}"></script>
+      <script src="{% static 'assets/src/js/bootstrap-maxlength.js' %}"></script>
+
+      {% comment %} <script>
+         $('#kt_docs_maxlength_custom_text').maxlength({
+            threshold: 20,
+            warningClass: "badge badge-primary  ",
+            limitReachedClass: "badge badge-success",
+            separator: ' of ',
+            preText: 'You have ',
+            postText: ' chars remaining.',
+            validate: true
+        });
+      </script> {% endcomment %}
+
+      <script>
+         var maxLengthOptions = {
+             threshold: 20,
+             warningClass: "badge badge-primary",
+             limitReachedClass: "badge badge-success",
+             separator: ' of ',
+             preText: 'You have entered ',
+             postText: ' chars.',
+             validate: true
+         };
+     
+         if ($('#kt_docs_maxlength_custom_text').length > 0) {
+            $('#kt_docs_maxlength_custom_text').maxlength(maxLengthOptions);
+        }
+    
+        if ($('#kt_docs_maxlength_custom_text2').length > 0) {
+            $('#kt_docs_maxlength_custom_text2').maxlength(maxLengthOptions);
+        }
+
+        if ($('#kt_docs_maxlength_custom_text3').length > 0) {
+         $('#kt_docs_maxlength_custom_text3').maxlength(maxLengthOptions);
+        }
+
+        if ($('#kt_docs_maxlength_custom_text4').length > 0) {
+         $('#kt_docs_maxlength_custom_text4').maxlength(maxLengthOptions);
+        }
+        if ($('#kt_docs_maxlength_custom_text5').length > 0) {
+         $('#kt_docs_maxlength_custom_text5').maxlength(maxLengthOptions);
+        }
+        if ($('#kt_docs_maxlength_custom_text6').length > 0) {
+         $('#kt_docs_maxlength_custom_text6').maxlength(maxLengthOptions);
+        }
+
+        if ($('#kt_docs_maxlength_custom_text7').length > 0) {
+         $('#kt_docs_maxlength_custom_text7').maxlength(maxLengthOptions);
+        }
+        
+    
+        if ($('#new_input').length > 0) {
+            $('#new_input').maxlength(maxLengthOptions);
+        }
+
+        if ($('#kt_docs_maxlength_custom_text3').length > 0) {
+         $('#kt_docs_maxlength_custom_text3').maxlength(maxLengthOptions);
+         }
+
+        if ($('#comment').length > 0) {
+         $('#comment').maxlength(maxLengthOptions);
+        }
+
+
+        
+      </script>
+      <script>
+         function restrictPercInput(event) {
+            const input = event.target;
+            let value = input.value;
+
+            // If the value is empty (backspace was pressed), we do nothing
+            if (value === "") {
+               return;
+            }
+
+            // Remove any non-numeric characters (but we allow backspace)
+            value = value.replace(/[^0-9]/g, '');
+
+            // If the value is still a single digit and it's below 5, reject it
+            if (value.length === 1 && Value < 5) {
+               Value = 5;  // Clear the input if it's less than 5
+            }
+
+            // Convert to an integer
+            let numValue = parseInt(value, 10);
+
+            
+
+            // If the value is less than 50, set it to 50
+            if (numValue < 50) {
+               numValue = 50;
+            } 
+            // If the value is greater than 100, set it to 100
+            else if (numValue > 100) {
+               numValue = 100;
+            }
+
+            
+
+            // Set the cleaned and validated value back to the input
+            input.value = numValue;
+         }
+      </script>
+      <style>
+         .tox:not(.tox-tinymce-inline) .tox-editor-header {
+            border-bottom: 1px solid #EEEEEE;
+         }
+   
+         .tox .tox-editor-header{
+            z-index: 0;
+         
+         }
+
+         .tox-tinymce { 
+            height: 288px;
+         
+        }
+      </style>
+      
+      
+
+
+   </body>
+</html>

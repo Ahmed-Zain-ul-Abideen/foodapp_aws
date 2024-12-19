@@ -1,0 +1,21 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Chef Registration{% endblock %}
+{% block content %}  
+<div class="container-fluid"  >
+    <div style="display:flex;flex-direction:column">
+        {% load static %}
+        
+        {% load crispy_forms_tags %}
+        <div style="display:flex;width:70%;margin:auto">
+            <h2 style="padding-top: 2rem;padding-bottom: 2rem;">Register</h2>
+        </div>
+        <div style="display:flex;width:70%;margin:auto">
+            <div class="container"> 
+                {% csrf_token %}
+                {% crispy form %} 
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

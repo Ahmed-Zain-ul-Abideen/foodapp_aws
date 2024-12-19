@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title> {% block title %}Food-App{% endblock %}</title>
+      {% load static %}
+      <link rel="icon" type="image/x-icon" href="{% static 'assets/src/images/logo/favicon-2.ico' %}">
+      <link rel="stylesheet" type="text/css" href="{% static 'assets/src/css/bootstrap.min.css' %}" />
+      <!-- site css -->
+      <link rel="stylesheet" type="text/css" href= "{% static 'assets/src/css/style.css' %}" />
+      <!-- responsive css -->
+      <link rel="stylesheet" type="text/css" href= "{% static 'assets/src/css/responsive.css' %}" /> 
+      <!-- color css -->
+      <link rel="stylesheet" type="text/css" href=  "{% static 'assets/src/css/colors.css' %}" />
+      <!-- select bootstrap -->
+      <link rel="stylesheet" type="text/css" href=  "{% static 'assets/src/css/bootstrap-select.css' %}" />
+      <!-- scrollbar css -->
+      <link rel="stylesheet" type="text/css" href= "{% static 'assets/src/css/perfect-scrollbar.css' %}" />
+      <!-- custom css -->
+      <link rel="stylesheet" type="text/css" href= "{% static 'assets/src/css/custom.css' %}" />
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+   </head>
+   <body class="inner_page login">
+      <form method="POST" action="/user-login">
+         {% csrf_token %} 
+         <div class="full_container">
+            <div class="container">
+               
+               <div class="center verticle_center full_height">
+                  <div class="login_section">
+                     <div class="logo_login" style="background-image: url('{{ STATIC_URL }}assets/src/images/layout_img/login_image.jpg');">
+                        <div class="center">
+                           <img width="210" src="{% static 'assets/src/images/logo/logo-2.png' %}" alt="#" />
+                        </div>
+                     </div> 
+                     <div style = "margin-top :20px">
+                        
+                        <div class="alert alert-warning alert-dismissible" style="text-align: center;width: 380px;margin-top: 30px;margin: auto;">
+                            {% comment %} <button type="button"  data-dismiss="alert">&times;</button> {% endcomment %}
+                            <span id="alerttext">Permission Denied! You don't have permission to access this page</span> 
+                        </div>
+                        
+                    </div>
+                           
+                     <div style="display: flex;flex-direction: column;margin: auto;width: 60%;margin-top: 70px;"> 
+                        <!-- <div class="field">  -->
+                        
+                        <!-- <div class="field"> -->
+                        
+                        
+                        
+                     </div>   
+                  </div>
+               </div>
+            </div>
+         </div>
+      </form>
+      <!-- jQuery -->
+      <!-- jQuery -->
+      <script src="{% static 'assets/src/js/jquery.min.js' %}"></script>
+      <script src="{% static 'assets/src/js/popper.min.js' %}"></script>
+      <script src="{% static 'assets/src/js/bootstrap.min.js' %}"></script>
+      <!-- wow animation -->
+      <script src="{% static 'assets/src/js/animate.js' %}"></script>
+      <!-- select country -->
+      <script src="{% static 'assets/src/js/bootstrap-select.js' %}"></script>
+      <!-- owl carousel -->
+      <script src="{% static 'assets/src/js/owl.carousel.js' %}"></script> 
+      <!-- chart js -->
+      <script src="{% static 'assets/src/js/Chart.min.js' %}"></script>
+      <script src="{% static 'assets/src/js/Chart.bundle.min.js' %}"></script>
+      <script src="{% static 'assets/src/js/utils.js' %}"></script>
+      <script src="{% static 'assets/src/js/analyser.js' %}"></script>
+      <!-- nice scrollbar -->
+      <script src="{% static 'assets/src/js/perfect-scrollbar.min.js' %}"></script>
+      <script>
+         var ps = new PerfectScrollbar('#sidebar');
+      </script>
+      <!-- custom js -->
+      <script src="{% static 'assets/src/js/custom.js' %}"></script>
+      <script src="{% static 'assets/src/js/chart_custom_style1.js' %}"></script>
+   </body>
+</html>

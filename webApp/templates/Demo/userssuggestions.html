@@ -1,0 +1,426 @@
+{% load static %}
+<!DOCTYPE HTML> 
+<html lang="en">
+    <head>  
+        <!-- basic -->
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- mobile metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+        <!-- site metas -->
+        <title>{% block title %}Users Suggestions{% endblock %}</title> 
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />  
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'assets/src/css/bootstrap.min.css' %}"
+        />
+        <!-- site css -->
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'assets/src/css/style.css' %}"
+        />
+        <!-- responsive css -->
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'assets/src/css/responsive.css' %}"
+        />
+        <!-- color css -->
+
+        <!-- select bootstrap -->
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'assets/src/css/bootstrap-select.css' %}"
+        />
+        <!-- scrollbar css -->
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'assets/src/css/perfect-scrollbar.css' %}"
+        />
+        <!-- custom css -->
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'assets/src/css/custom.css' %}"
+        />
+
+        {% comment %} dropdown CSS {% endcomment %}
+        <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'assets/src/css/example-styles.css' %}"
+        />
+
+        <!-- Texteditor js  -->
+        <script src="{% static 'assets/src/js/tinymce/js/tinymce/tinymce.min.js' %}"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+        tinymce.init({ forced_root_block: "", selector: "textarea" });
+        </script>
+
+        <style>
+        .tox-promotion {
+            display: none;
+        }
+
+        .tox-statusbar__branding {
+            display: none;
+        }
+        </style>
+    </head>
+
+    <body>
+        {% if  not   ven  %} 
+
+        {%else%}  
+
+            <div style="display: flex;width: 100%;flex-direction: column;">
+                <div style="display: flex;width: 90%;margin-left: 1rem;margin-right: 1rem;flex-direction: column;">
+                    <div style="display: flex;flex-direction: row;width: 100%;padding-bottom: 2rem;"> 
+                        <div style="display: flex;flex-direction: row;width: 50%;">  
+                            <h3>Email</h3>
+                        </div>
+                        <div style="display: flex;flex-direction: row;width: 50%;">  
+                            <h3>Suggestion</h3>
+                        </div> 
+                    </div>
+                    {% for latest_quiz  in ven %} 
+                        <div style="display: flex;flex-direction: row;width: 100%;padding-bottom: 2rem;"> 
+                            <div style="display: flex;flex-direction: row;width: 50%;">  
+                                <div style="display: flex;width: 50%;"> 
+                                    <input type="text" class="styled_input_box_edit_username" id="other_input_{{latest_quiz.id}}" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;" value="{{latest_quiz.email}}" placeholder="Enter Option" maxlength="1000" />
+                                </div>
+                                
+                                <div style="width: 50%;display: flex;">   
+                                    <button name="update_others" id="{{latest_quiz.id}}"  class="btn styled_add_option_button" style="margin-top: -17px; margin-left: 6px;font-size: 11px;border-radius: 7px;" type="button">Update</button>
+                                </div>
+                            </div>
+                            <div style="display: flex;flex-flow: row wrap;width: 50%;">  
+                                {{latest_quiz.suggestion}}
+                            </div> 
+                        </div> 
+                    {% endfor %}
+                </div>
+
+                <div style="width: 50%">  
+                    <input type="text" class="styled_input_box_edit_username" id="new_input" style="border-top: none;border-left: none;border-right: none;border-bottom: solid #ddd 2px;" placeholder="Enter Option" maxlength="200" />
+
+
+                    <button name="del_action"  class="btn styled_add_option_button" style="margin-top: -17px; margin-left: 6px;font-size: 11px;border-radius: 7px;" type="button">Update</button>
+                </div>
+
+                {% if  ven.paginator.num_pages  ==  1 %} 
+                {%else%}   
+
+                    {% for i in ven.paginator.page_range %} 
+
+                        {% if i == ven.number %} 
+
+                            {% if ven.number == 1 %} 
+                                <div
+                                    style="
+                                    display: flex;
+                                    flex-direction: row;
+                                    justify-content: space-between;
+                                    width: 100%; 
+                                    padding-top: 2rem;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                        display: flex;
+                                        flex-direction: row;
+                                        justify-content: center;
+                                        width: 15%; 
+                                        "
+                                    >
+                                    </div>
+                                    <div
+                                        style="
+                                        display: flex;
+                                        flex-direction: row;
+                                        justify-content: left;
+                                        width: 50%; 
+                                        "
+                                    >
+                                    <a  href="?page={{ven.number|add:'1'}}">
+                                        <button
+                                        type="button"
+                                        style="
+                                            background: #0971b8;
+                                            padding-left: 16px;
+                                            padding-right: 16px;
+                                            color: white;
+                                        "
+                                        class="btn"
+                                        >
+                                            Next   
+                                        </button>
+                                    </a>
+                                    </div>
+                                    
+                                    <div
+                                        style="
+                                        display: flex;
+                                        flex-direction: row;
+                                        justify-content: left;
+                                        width: 35%; 
+                                        "
+                                    >
+                                    </div>
+                                </div> 
+                            {%elif ven.number == ven.paginator.num_pages %}
+
+                                <div
+                                    style="
+                                    display: flex;
+                                    flex-direction: row;
+                                    justify-content: space-between;
+                                    width: 100%; 
+                                    padding-top: 2rem;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                        display: flex;
+                                        flex-direction: row;
+                                        justify-content: center;
+                                        width: 15%; 
+                                        "
+                                    >
+                                    </div>
+                                    <div
+                                        style="
+                                        display: flex;
+                                        flex-direction: row;
+                                        justify-content: left;
+                                        width: 50%; 
+                                        "
+                                    >
+                                    <a  href="?page={{ven.number|add:'-1'}}">
+                                        <button
+                                        type="button"
+                                        style="
+                                            background: #0971b8;
+                                            padding-left: 16px;
+                                            padding-right: 16px;
+                                            color: white;
+                                        "
+                                        class="btn"
+                                        >
+                                            Previous
+                                        </button>
+                                    </a>
+                                    </div>
+                                    
+                                    <div
+                                        style="
+                                        display: flex;
+                                        flex-direction: row;
+                                        justify-content: left;
+                                        width: 35%; 
+                                        "
+                                    >
+                                    </div>
+                                </div> 
+                            {%else%}   
+                                <div
+                                    style="
+                                    display: flex;
+                                    flex-direction: row;
+                                    justify-content: space-between;
+                                    width: 100%; 
+                                    padding-top: 2rem;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                        display: flex;
+                                        flex-direction: row;
+                                        justify-content: center;
+                                        width: 15%; 
+                                        "
+                                    >
+                                    </div>
+                                    <div
+                                        style="
+                                        display: flex;
+                                        flex-direction: row;
+                                        justify-content: left;
+                                        width: 50%; 
+                                        "
+                                    >
+                                    <a  href="?page={{ven.number|add:'-1'}}">
+                                        <button
+                                        type="button"
+                                        style="
+                                            background: #0971b8;
+                                            padding-left: 16px;
+                                            padding-right: 16px;
+                                            color: white;
+                                        "
+                                        class="btn"
+                                        >
+                                            Previous
+                                        </button>
+                                    </a>
+                                    </div>
+                                    
+                                    <div
+                                    style="
+                                        display: flex;
+                                        flex-direction: row;
+                                        justify-content: left;
+                                        width: 35%; 
+                                    "
+                                    >
+                                    <a  href="?page={{ven.number|add:'1'}}">
+                                        <button
+                                        type="button"
+                                        style="
+                                            background: #0971b8;
+                                            padding-left: 16px;
+                                            padding-right: 16px;
+                                            color: white;
+                                        "
+                                        class="btn"
+                                        >
+                                        Next  Quiz
+                                        </button>
+                                    </a>
+                                    </div>
+                                </div>  
+                            {%endif%}
+
+                            
+
+                        {%else%}   
+                        {%endif%} 
+                    {% endfor %}
+                {%endif%}
+            </div> 
+
+        {% endif %}
+
+        <!-- jQuery -->
+        <script src="{% static 'assets/src/js/code.jquery.com_jquery.3.1.1.min.js' %}"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script> 
+        <script src="{% static 'assets/src/js/popper.min.js' %}"></script>
+        <script src="{% static 'assets/src/js/bootstrap.min.js' %}"></script>
+        <!-- wow animation -->
+        <script src="{% static 'assets/src/js/animate.js' %}"></script>
+        <!-- select country -->
+
+        <!-- <script src="{% static 'assets/src/js/bootstrap-select.js' %}"></script> -->
+        <!-- owl carousel -->
+        <script src="{% static 'assets/src/js/owl.carousel.js' %}"></script>
+        <!-- chart js -->
+        <script src="{% static 'assets/src/js/Chart.min.js' %}"></script>
+        <script src="{% static 'assets/src/js/Chart.bundle.min.js' %}"></script>
+        <script src="{% static 'assets/src/js/utils.js' %}"></script>
+        <script src="{% static 'assets/src/js/analyser.js' %}"></script>
+        <!-- nice scrollbar -->
+        <script src="{% static 'assets/src/js/perfect-scrollbar.min.js' %}"></script>
+        <script>
+        var ps = new PerfectScrollbar("#sidebar");
+        </script>
+        <script>
+        
+            $('button[name="del_action"]').click(function(){
+                var id = $('#new_input').val(); 
+                $.ajax({
+                    url: "delete_quiz_view",
+                    type: "GET",
+                    data: {"quiz_id": id},
+                    success: function(response){     
+                        // $("#here").load(" #here > *");
+                        location.reload(true); 
+                    }
+                });
+            })
+        </script>
+        <script>
+        
+            $('button[name="update_others"]').click(function(){
+                var btid = $(this).attr('id'); 
+                var inpt = "#" + "other_input_" + btid
+                var id = $(inpt).val(); 
+                $.ajax({
+                    url: "delete_quiz_view",
+                    type: "GET",
+                    data: {"quiz_id": id,"update_other":"true","this_id":btid},
+                    success: function(response){     
+                        // $("#here").load(" #here > *");
+                        location.reload(true); 
+                    }
+                });
+            })
+        </script>
+        <!-- custom js -->
+        <script src="{% static 'assets/src/js/custom.js' %}"></script>
+        <script src="{% static 'assets/src/js/chart_custom_style1.js' %}"></script>
+        {% comment %} dropdown Js {% endcomment %}
+
+        <script src="{% static 'assets/src/js/jquery.multi-select.js' %}"></script>
+        <script src="{% static 'assets/src/js/bootstrap-maxlength.js' %}"></script>
+
+        {% comment %}
+        <script>
+        $("#kt_docs_maxlength_custom_text").maxlength({
+            threshold: 20,
+            warningClass: "badge badge-primary  ",
+            limitReachedClass: "badge badge-success",
+            separator: " of ",
+            preText: "You have entered ",
+            postText: " characters.",
+            validate: true,
+        });
+        </script>
+        {% endcomment %}
+
+        <script>
+        var maxLengthOptions = {
+            threshold: 20,
+            warningClass: "badge badge-primary",
+            limitReachedClass: "badge badge-success",
+            separator: " of ",
+            preText: "You have entered ",
+            postText: " characters.",
+            validate: true,
+        };
+
+        if ($("#kt_docs_maxlength_custom_text").length > 0) {
+            $("#kt_docs_maxlength_custom_text").maxlength(maxLengthOptions);
+        }
+
+        if ($("#kt_docs_maxlength_custom_text2").length > 0) {
+            $("#kt_docs_maxlength_custom_text2").maxlength(maxLengthOptions);
+        }
+
+        if ($("#new_input").length > 0) {
+            $("#new_input").maxlength(maxLengthOptions);
+        }
+
+        if ($("#comment").length > 0) {
+            $("#comment").maxlength(maxLengthOptions);
+        }
+        </script>
+        <style>
+        .tox:not(.tox-tinymce-inline) .tox-editor-header {
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .tox .tox-editor-header {
+            z-index: 0;
+        }
+        </style>
+    </body>
+</html>
