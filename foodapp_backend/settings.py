@@ -19,7 +19,7 @@ SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'django-insecure-=mn$5w9f@kn$gtbf20irv(bjve!xraw!rn+avajxo!93h#i#ss'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 CSRF_TRUSTED_ORIGINS= ["http://192.168.18.29:8080","http://192.168.18.29:8000","http://192.168.18.67:8080",
     "http://192.168.18.67:8000",      "http://192.168.18.68:8080","http://192.168.18.68:8000",
