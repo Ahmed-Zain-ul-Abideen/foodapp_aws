@@ -77,9 +77,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',  # <--
     'allauth.account.middleware.AccountMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'foodapp_backend.urls'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
@@ -366,9 +369,8 @@ LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'sign_in'
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+STATICFILES_DIRS = [BASE_DIR / "static"] 
+STATIC_ROOT = BASE_DIR / "staticfiles" 
 
 
 
