@@ -368,7 +368,7 @@ LOGIN_REDIRECT_URL = 'soc_logi'
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'sign_in'
 
-STATIC_URL = 'static/'
+STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"] 
 STATIC_ROOT = BASE_DIR / "staticfiles" 
 
